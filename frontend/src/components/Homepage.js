@@ -222,7 +222,7 @@ const Home = () => {
       
    </section>
 
-  
+  {/* CTA SECTION */}
       <section id="cta" class="cta" style={{
         backgroundColor: '#5FCF80',
         backgroundSize: 'cover',
@@ -239,7 +239,7 @@ const Home = () => {
 
       </div>
     </section>
-      
+       {/* CTA SECTION */}
       <footer id="footer">
       <div className="footer-top">
       <div className="container">

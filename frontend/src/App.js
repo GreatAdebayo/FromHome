@@ -13,52 +13,25 @@ import "aos/dist/aos.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-
 AOS.init();
 
 function App() {
   return (
     <>
       <Router>
-        <Switch>
-
-          <Route exact path="/">
-          <Home/>
-          </Route>
-        
-          <Route exact path="/courses">
-          <Courses/>
-          </Route>
-
-          <Route exact path="/allcourses">
-          <AllCourses/>
-          </Route>
-
-          <Route exact path="/coursedetails">
-          <Coursedetails/>
-          </Route>
-
-          <Route exact path="/login">
-          <Login/>
-          </Route>
-
-          <Route exact path="/signup">
-          <Signup/>
-          </Route>
-
-          <Route exact path="/verify">
-          <Verify/>
-          </Route>
-
-          <Route exact path="/dashboard">
-          <Dashboard/>
-          </Route>
-
-
-        </Switch>
+     
+          <Route exact path="/" component={Home}/>
+          <Route  path="/courses" component={Courses}/>
+          <Route  path="/allcourses" component={AllCourses}/>
+          <Route  path="/coursedetails" component={Coursedetails}/>
+          <Route path="/login" component={Login}/>
+          <Route  path="/signup" component={Signup}/>
+          <Route  path="/verify" component={Verify}/>
+          <Route path="/dashboard"  component={Dashboard} />
+       
+        </Router>
       
-      </Router>
-      
+        {/* render={() => <Mylearning/>} */}
     </>
   );
 }

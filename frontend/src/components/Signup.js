@@ -3,9 +3,9 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { Link as Link2 ,  useHistory} from 'react-router-dom';
 import { Link } from 'react-scroll';
-import Swal from 'sweetalert2';
 import axios from 'axios';
 import {Baseurl} from '../components/Baseurl.js';
+import Swal from 'sweetalert2';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -22,7 +22,7 @@ const Toast2 = Swal.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
-  timer: 1500,
+  timer: 50000,
   didOpen: (toast) => {
     toast.addEventListener('mouseenter', Swal.stopTimer)
     toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -70,10 +70,10 @@ const Signup = () => {
     setSignup({ ...signup, [name]: value })
   }
   const handleSubmit = (e) => {
-    let signUpResponse = '';
     setIsRoll(true)
     e.preventDefault();
-    if(signup.firstname && signup.lastname && signup.email && signup.password) {
+    if (signup.firstname && signup.lastname && signup.email && signup.password) {
+      let signUpResponse = '';
       axios.post(`${Baseurl}signup.php`, JSON.stringify(signup)).then(res => {
         setIsRoll(false);
         signUpResponse = res.data;
@@ -105,8 +105,9 @@ const Signup = () => {
       })
     } else {
       setIsRoll(false)
+      setSignup("")
       Toast2.fire({
-        icon: 'warning',
+        icon: 'error',
         title: 'Please fill all input'
       })
     }

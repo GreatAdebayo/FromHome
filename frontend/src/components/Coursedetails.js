@@ -1,20 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { Link as Link2 } from 'react-scroll';
-const Coursedetails = () => {
- return (
-  <div>
-   <main id="main">
-   <div class="breadcrumbs" data-aos="fade-in">
-    <div class="container">
-    <h2>Course Details</h2>
-    </div>
-    </div>
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';  
 
-    
+
+const Coursedetails = () => {
+const [isOpen, setIsOpen] = useState(false)
+
+const toggle = () => {
+   setIsOpen(!isOpen);
+  };
+ return (
+   <div>
+     <Navbar  toggle={toggle}/>
+    <Sidebar isOpen={isOpen} toggle={toggle} />
+   <main id="main" className="mt-5">
     <section id="course-details" class="course-details">
-      <div class="container" data-aos="fade-up">
-      <Link to="/allcourses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back </p></Link>
+         <div class="container" data-aos="fade-up">
+         <div class="section-title">
+         <h2>Available React Courses</h2>
+         <p>React JS</p>
+         </div>
+        <Link to="/allcourses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back </p></Link>
         <div class="row">
           <div class="col-lg-8">
             <img src="assets/img/details.jpg" class="img-fluid rounded" alt=""/>

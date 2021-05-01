@@ -1,27 +1,41 @@
-import React from 'react'
+import React, {useState}from 'react'
 import { Link } from 'react-router-dom';
 import { Link as Link2 } from 'react-scroll';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+
+
+
 const AllCourses = () => {
+
+const [isOpen, setIsOpen] = useState(false)
+
+const toggle = () => {
+   setIsOpen(!isOpen);
+  };
+ 
+
 return (
 <div>
-<main id="main" data-aos="fade-in">
-<div class="breadcrumbs">
-<div class="container">
-<h2>React JS</h2>
-<p className="font-weight-bold">Below are all the available React JS courses <i class="fal fa-angle-double-down"></i></p>
-</div>
-</div>
-<section id="courses" class="courses">
-<div class="container" data-aos="fade-up">
-<Link to="/courses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back to Courses</p></Link>
-<div class="row" data-aos="zoom-in" data-aos-delay="100">
-<div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-<div class="course-item">
-<div class="course-content">
-<div class="d-flex justify-content-between align-items-center mb-3">
-<Link to="/coursedetails" style={{ cursor: 'pointer', textDecoration:'none' }}><h4>Course Details</h4></Link>
-<p class="price">Free</p>
-</div>
+<Navbar  toggle={toggle}/>
+<Sidebar isOpen={isOpen} toggle={toggle} />
+    
+   <main id="main" data-aos="fade-in" className="mt-5">
+   <section id="courses" class="courses">
+   <div class="container" data-aos="fade-up">
+   <div class="section-title mt-3">
+   <h2>Available react courses</h2>
+  <p>React JS</p>
+   </div>
+  <Link to="/courses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back to Courses</p></Link>
+  <div class="row" data-aos="zoom-in" data-aos-delay="100">
+  <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+  <div class="course-item">
+  <div class="course-content">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+  <Link to="/coursedetails" style={{ cursor: 'pointer', textDecoration:'none' }}><h4>Course Details</h4></Link>
+  <p class="price">Free</p>
+  </div>
 
 <h3><a style={{ cursor: 'pointer' }}>Website Design</a></h3>
 <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>

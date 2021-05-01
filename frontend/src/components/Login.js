@@ -34,7 +34,8 @@ const Toast2 = Swal.mixin({
 
 const Login = () => {
 useEffect(() => {
-localStorage.removeItem('Email');
+  localStorage.removeItem('Email');
+
 });
 let history = useHistory();
  const [isOpen, setIsOpen] = useState(false)
@@ -93,7 +94,7 @@ const submitForm = (e) => {
   } else {
     setIsRoll(false)
     Toast2.fire({
-      icon: 'warning',
+      icon: 'error',
       title: 'Please fill all input'
     })
   }

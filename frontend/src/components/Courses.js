@@ -1,15 +1,31 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Link as Link2 } from 'react-scroll';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
+import Skeleton from 'react-loading-skeleton';
+
 
 const Courses = () => {
- return (
-  <div>
-   {/* Courses us section starts */}
-   <section id="courses" class="features mt-4">
-      <div class="container" data-aos="fade-up">
+const [skeleton, Setskeleton] = useState(true);
 
-      <div class="section-title mt-3">
+useEffect(() => {
+  setTimeout(() => Setskeleton(false), 1000);
+})
+const [isOpen, setIsOpen] = useState(false)
+
+const toggle = () => {
+   setIsOpen(!isOpen);
+  };
+ 
+ return (
+   <div>
+    <Navbar  toggle={toggle}/>
+    <Sidebar isOpen={isOpen} toggle={toggle} />
+   {/* Courses us section starts */}
+   <section id="courses" class="features mt-5">
+      <div class="container" data-aos="fade-up">
+      <div class="section-title mt-5">
       <h2>Courses</h2>
       <p>Our Courses</p>
      <Link to="/" style={{textDecoration: 'none'}}> <h5><i class="fas fa-long-arrow-alt-left"></i> Home</h5></Link>
@@ -24,91 +40,93 @@ const Courses = () => {
            
       
       <div class="col-lg-3 col-md-4">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="fab fa-html5" style={{color: '#ffbb2c'}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>HTML</a></h3></Link>
-      </div>
+      </div>}     
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="ri-bar-chart-box-line" style={{color: '#5578ff'}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Graphics Design</a></h3></Link>
-      </div>
+      </div>}
       </div>
            
     <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-    <div class="icon-box">
+    {skeleton ? <Skeleton  count={3} duration={2}/> : <div class="icon-box">
     <i class="fab fa-android" style={{color:" #e80368"}}></i>
     <Link to="/allcourses"  style={{ textDecoration: 'none' }}><h3><a>Andriod Development</a></h3></Link>
-    </div>
+    </div> }
     </div>
     
            
-     <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
-     <div class="icon-box">
+    <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
+     {skeleton ? <Skeleton  count={3} duration={2}/>:<div class="icon-box">
      <i class="fab fa-react" style={{color:" #e361ff"}}></i>
      <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>React</a></h3></Link>
+     </div> }        
      </div>
-      </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-angular" style={{color: "#47aeff"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Angular</a></h3></Link>
-      </div>
+      </div> }
+      
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-git"  style={{color: "#ffa76e"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>GIT</a></h3></Link>
-      </div>
+      </div>}
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-bootstrap"  style={{color: "#11dbcf"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Bootstrap</a></h3></Link>
-      </div>
+      </div> }
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-wordpress"  style={{color: "#4233ff"}}></i>
       <Link to="/allcourses"  style={{ textDecoration: 'none' }}><h3><a>Wordpress</a></h3></Link>
-      </div>
+      </div>}
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> :  <div class="icon-box">
       <i class="fab fa-vuejs" style={{color: "#b2904f"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Vue</a></h3></Link>
-      </div>
+      </div>}
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="fab fa-laravel"  style={{color: "#b20969"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Laravel</a></h3></Link>
-      </div>
+      </div>}
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>  :  <div class="icon-box">
       <i class="fab fa-php" style={{color: "#ff5828"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>PHP</a></h3></Link>
-      </div>
+      </div>}
       </div>
       
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-java"  style={{color: "#29cc61"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Java</a></h3></Link>
-      </div>
+      </div>}
+      
       </div>
       </div>
 
