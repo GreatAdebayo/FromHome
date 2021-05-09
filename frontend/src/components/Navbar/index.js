@@ -31,7 +31,7 @@ const Navbar = ({ toggle }) => {
        <NavRoute to="/courses">Courses</NavRoute>
       </NavItem>
       <NavItem>
-      <NavRoute to="/dashboard">My Account</NavRoute>
+      <NavRoute to="/dashboard">Dashboard</NavRoute>
       </NavItem>
        <NavItem>
        <NavRoute to="/login">Login</NavRoute>
@@ -44,7 +44,7 @@ const Navbar = ({ toggle }) => {
       </NavItem>
      </NavMenu>
      <NavBtn>
-      <NavBtnLink  style={{ textDecoration: 'none' }}>Create a Course <i class="fal fa-arrow-right"></i></NavBtnLink>
+      <NavBtnLink  style={{ textDecoration: 'none' }} to="/dashboard/createcourse">Create a Course <i class="fal fa-arrow-right"></i></NavBtnLink>
      </NavBtn>
      </NavbarContainer>
 

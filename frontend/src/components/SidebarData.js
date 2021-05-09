@@ -6,9 +6,27 @@ import {IoMdLogOut} from 'react-icons/io';
 
 export const SidebarData = [
   {
+    title: 'Home Page',
+    path: '/',
+    icon: <i class="fas fa-home" style={{color:'#3ac162'}}></i>,
+    cName: 'nav-text'
+  },
+  {
     title: 'My Learning',
     path: '/dashboard',
     icon: <IoIcons.IoIosPaper style={{color:'#3ac162'}}/>,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Create a Course',
+    path: '/dashboard/createcourse',
+    icon: <IoMdLogOut  style={{color:'#3ac162'}}/>,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Created Courses',
+    path: '/dashboard/createdcourses',
+    icon: <IoIcons.IoMdPeople  style={{color:'#3ac162'}}/>,
     cName: 'nav-text'
   },
   {
@@ -18,9 +36,9 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Posted Courses',
-    path: '/dashboard/postedcourses',
-    icon: <IoIcons.IoMdPeople  style={{color:'#3ac162'}}/>,
+    title: 'Payment',
+    path: '/dashboard/payment',
+    icon: <FaWallet  style={{color:'#3ac162'}}/>,
     cName: 'nav-text'
   },
   {
@@ -28,17 +46,6 @@ export const SidebarData = [
     path: '/dashboard/myprofile',
     icon: <FaUserAlt  style={{color:'#3ac162'}}/>,
     cName: 'nav-text'
-  },
-  {
-    title: 'Payment',
-    path: '/dashboard/payment',
-    icon: <FaWallet  style={{color:'#3ac162'}}/>,
-    cName: 'nav-text'
- },
- {
-  title: 'Logout',
-  path: '/login',
-  icon: <IoMdLogOut  style={{color:'#3ac162'}}/>,
-  cName: 'nav-text'
-}
+  }
+
 ];

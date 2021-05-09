@@ -13,7 +13,7 @@ class MyIndex {
  //API STARTS//
  public $response = array('UserExists'=>'', 'AccountCreated'=>'', 'VerifyCodeSent'=>'', 
  'CodeExpired'=>'', 'CodeCorrect'=>'', 'CodeWrong'=>'', 'VerifyCodeReSent'=>'', 'EmailNotFound'=>'',
- 'Auth'=>'', 'LoginSuccess'=>'', 'UserInfo'=>'');
+ 'Auth'=>'', 'LoginSuccess'=>'', 'UserInfo'=>'', 'Verify'=>'');
 //API ENDS//
 
 
@@ -39,8 +39,14 @@ class MyIndex {
      $stmt->execute();
      $res = $stmt->get_result();
      if($res->num_rows > 0){
-        $response['UserExists'] = 'UserExists';
-          }else{
+      $myFetchedUser = $res->fetch_assoc();
+      $status = $myFetchedUser['verification_status'];
+      if($status == 'false'){
+        $response['Verify'] = 'Verify';
+      }else{
+       $response['UserExists'] = 'UserExists';
+      }
+        }else{
         $createSql = "INSERT INTO users_tb(first_name, last_name, email, password) 
         VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($createSql); 
@@ -207,7 +213,7 @@ class MyIndex {
       if($verifyPassword){
         $data = array(
           'iss'=>'localhost/3000',
-          'iat'=>time(),
+          'iat'=>time(),        
           'exp'=>time() + 86400,
           'user'=>$fetchedUserId
         );

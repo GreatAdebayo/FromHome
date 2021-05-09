@@ -16,12 +16,12 @@ function Navbar() {
   return (
     <>
       <IconContext.Provider value={{ color: '#444444' }}>
-        <div className='navbar'>
-      <Link className='menu-bars' style={{textDecoration:'none'}}>
-      <p className="logo">  <FaIcons.FaBars onClick={showSidebar} /> <i class="fas fa-book-reader ml-4"></i> FromHome</p>
-          </Link>
+        <div className='navbar fixed-top'>
+      <a className='menu-bars' style={{textDecoration:'none'}}>
+     <p className="logo">  <FaIcons.FaBars onClick={showSidebar} /> <i class="fas fa-book-reader ml-4"></i> FromHome</p>
+          </a>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+        <nav className={sidebar ? 'nav-menu act' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
             <li className='navbar-toggle'>
               <Link to='#' className='menu-bars'>

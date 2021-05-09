@@ -25,13 +25,13 @@ const Sidebar = ({ isOpen, toggle }) => {
     <SidebarMenu>
      <SidebarLink to="about" onClick={toggle}>About</SidebarLink>
      <SidebarRoute to="/courses" onClick={toggle}>Courses </SidebarRoute>
-     <SidebarRoute to="/dashboard" onClick={toggle}>My Account </SidebarRoute>
+     <SidebarRoute to="/dashboard" onClick={toggle}>Dashboard</SidebarRoute>
      <SidebarRoute to="/login" onClick={toggle}>Login </SidebarRoute>
      <SidebarRoute to="/signup" onClick={toggle}>Signup </SidebarRoute>
      <SidebarLink to="footer" onClick={toggle}>Contact </SidebarLink>
-     <SidebarLink to="signup" onClick={toggle}>
-     <Button to="signup" onMouseEnter={onHover} onMouseLeave={onHover}>
-      <>Create a Course <i class="fal fa-arrow-right"></i></> 
+     <SidebarLink onClick={toggle}>
+     <Button to="/dashboard/createcourse"  onMouseEnter={onHover} onMouseLeave={onHover}>
+     <>Create a Course <i class="fal fa-arrow-right"></i></> 
      </Button>
      </SidebarLink>
 

@@ -1,39 +1,50 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
 
 const Savedcourses = () => {
+const [skeleton, Setskeleton] = useState(true);
+
+useEffect(() => {
+  setTimeout(() => Setskeleton(false), 1000);
+})
  return (
   <div>
   {/* COURSES SECTION */}
   <section id="courses" class="courses">
    <div class="container" data-aos="fade-up">
-   <div class="section-title">
+   <div class="section-title mt-5">
    <h2>Saved Courses</h2>
    </div>
-   <div class="row" data-aos="zoom-in" data-aos-delay="100">
-  <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-  <div class="course-item">
-  <div class="course-content mt-4">
-<h3><a style={{ cursor: 'pointer' }}>Website Design</a></h3>
+      {/* STARTS      */}
+<div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+<div class="course-item">
+<div class="course-content">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<Link to="/coursedetails" className="mr-5" style={{ cursor: 'pointer', textDecoration:'none' }}><h4>Course Details</h4></Link>
+<p class="price">Free</p>
+</div>
+{skeleton ? <Skeleton  count={5} duration={2}/> :<div> <h3><a style={{ cursor: 'pointer' }}>Search Engine Optimization</a></h3>
 <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
 <div class="trainer d-flex justify-content-between align-items-center">
 <div class="trainer-profile d-flex align-items-center">
-  <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt=""/>
-  <span>Antonio</span>
+  <img src="/assets/img/trainers/trainer-2.jpg" class="img-fluid" alt=""/>
+  <span>Lana</span>
 </div>
 <div class="trainer-rank d-flex align-items-center">
-  <i class="bx bx-user"></i>&nbsp;50
+  <i class="bx bx-user"></i>&nbsp;35
   &nbsp;&nbsp;
-  <i class="bx bx-heart"></i>&nbsp;65
+  <i class='bx bxs-star'></i>&nbsp;42
 </div>
-</div>
-</div>
-</div>
-</div> 
+</div></div>}
 
 
 </div>
 
 </div>
+</div>     
+ {/* ENDS */}
+  </div>
 </section>
    {/* COURSES SECTION */}  
   </div>

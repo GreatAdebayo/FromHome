@@ -39,7 +39,7 @@ const Home = () => {
               </p>
               <ul>
                 <li><i className="bi bi-check-circle"></i> Learning easy by studying right from the comfort of your home or wherever.</li>
-                <li><i className="bi bi-check-circle"></i> Teaching more fun as tutors can upload there materials and millions of students can access them.</li>
+                <li><i className="bi bi-check-circle"></i> Teaching more fun and monetary as tutors can upload there materials and millions of students can access them.</li>
                 <li><i className="bi bi-check-circle"></i> Learning in general fun.</li>
               </ul>
           </div>
@@ -108,7 +108,7 @@ const Home = () => {
                   <div class="icon-box mt-4 mt-xl-0">
                     <i class="bx bx-cube-alt"></i>
                     <h4>Teaching made fun</h4>
-                    <p>Reach out to more numbers of students by posting your courses on our platform.</p>
+                    <p>Reach out to more numbers of students by posting your courses on our platform and make money doing that.</p>
                   </div>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ const Home = () => {
         <div class="text-center">
           <h3>Are you a Tutor?</h3>
           <p> Create a courses now and let students start taking it. </p>
-          <Link2 style={{ textDecoration: 'none' }}><a class="cta-btn">Create a Course <i class="fal fa-arrow-right"></i></a></Link2>
+          <Link2 to="/dashboard/createcourse/details" style={{ textDecoration: 'none' }}><a class="cta-btn">Create a Course <i class="fal fa-arrow-right"></i></a></Link2>
         </div>
 
       </div>

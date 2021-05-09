@@ -10,7 +10,7 @@ const Courses = () => {
 const [skeleton, Setskeleton] = useState(true);
 
 useEffect(() => {
-  setTimeout(() => Setskeleton(false), 1000);
+  setTimeout(() => Setskeleton(false), 500);
 })
 const [isOpen, setIsOpen] = useState(false)
 
@@ -123,10 +123,17 @@ const toggle = () => {
       
       <div class="col-lg-3 col-md-4 mt-4">
       {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
+      <i class="fab fa-discourse" style={{color: "#29cc61"}}></i>
+      <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Others</a></h3></Link>
+      </div>}
+             
+      {/* <div class="col-lg-3 col-md-4 mt-4">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-java"  style={{color: "#29cc61"}}></i>
       <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Java</a></h3></Link>
       </div>}
-      
+      </div> */}
+             
       </div>
       </div>
 

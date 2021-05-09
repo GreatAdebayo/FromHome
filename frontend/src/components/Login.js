@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import { MDBBtn } from 'mdbreact';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { Link as Link2, useHistory } from 'react-router-dom';
@@ -12,7 +11,7 @@ const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
-  timer: 1000,
+  timer: 500,
   timerProgressBar: true,
   didOpen: (toast) => {
   toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -24,7 +23,7 @@ const Toast2 = Swal.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
-  timer: 1000,
+  timer: 1500,
   didOpen: (toast) => {
   toast.addEventListener('mouseenter', Swal.stopTimer)
   toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -74,10 +73,10 @@ const submitForm = (e) => {
       if (loginResponse.LoginSuccess) {
       Toast.fire({
       icon: 'success',
-      title: 'Signed in successfully'
+      title: 'Logged in successfully'
       })
       localStorage.setItem('Token', loginResponse.Auth);
-      setTimeout(() => history.push("/dashboard"), 1000);
+      setTimeout(() => history.push("/dashboard"), 500);
       } else if(loginResponse.IncorrectPwd) {
         Toast2.fire({
           icon: 'error',
@@ -94,7 +93,7 @@ const submitForm = (e) => {
   } else {
     setIsRoll(false)
     Toast2.fire({
-      icon: 'error',
+      icon: 'info',
       title: 'Please fill all input'
     })
   }

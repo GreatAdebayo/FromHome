@@ -22,7 +22,7 @@ const Toast2 = Swal.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
-  timer: 50000,
+  timer: 1500,
   didOpen: (toast) => {
     toast.addEventListener('mouseenter', Swal.stopTimer)
     toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -77,7 +77,14 @@ const Signup = () => {
       axios.post(`${Baseurl}signup.php`, JSON.stringify(signup)).then(res => {
         setIsRoll(false);
         signUpResponse = res.data;
-        if (signUpResponse.UserExists) {
+        if (signUpResponse.Verify) {
+          Toast2.fire({
+            icon: 'info',
+            title: 'Account already created, Login'
+          })
+        setTimeout(() => history.push('/login'), 500);
+        }
+        else if (signUpResponse.UserExists) {
           Toast2.fire({
             icon: 'error',
             title: 'Email address used'
@@ -107,7 +114,7 @@ const Signup = () => {
       setIsRoll(false)
       setSignup("")
       Toast2.fire({
-        icon: 'error',
+        icon: 'info',
         title: 'Please fill all input'
       })
     }

@@ -1,4 +1,4 @@
-import React, { useEffect }from 'react'
+import React, { useEffect, useState }from 'react'
 import axios from 'axios';
 import { Baseurl } from '../components/Baseurl.js';
 import Swal from 'sweetalert2';
@@ -8,17 +8,18 @@ import { Link } from 'react-scroll';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Mylearning from './Mylearning.js';
 import Savedcourses from './Savedcourses.js';
-import Postedcourses from './Postedcourses';
+import Createdcourses from './Createdcourses';
 import Myprofile from './Myprofile';
 import Payment from './Payment';
+import Createcourse from './Createcourse.js';
+
 
 
 const Toast = Swal.mixin({
  toast: true,
  position: 'top-end',
  showConfirmButton: false,
- timer: 500,
- timerProgressBar: true,
+ timer: 1000,
  didOpen: (toast) => {
  toast.addEventListener('mouseenter', Swal.stopTimer)
  toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -26,13 +27,23 @@ const Toast = Swal.mixin({
 })
 
 const Dashboard = () => {
- let history = useHistory();
- useEffect(() => {
+  let history = useHistory();
+  const [fname, setFname] = useState("")
+  const [lname, setLname] = useState("")
+  const [balance, setBalance] = useState("")
+  const [email, setEmail] = useState("")
+  const [status, setStatus] = useState("")
+
+  useEffect(() => {
   let token = localStorage.getItem('Token');
   axios.post(`${Baseurl}profile.php`, JSON.stringify(token)).then(res => {
    if (res.status == 200) {
-    let profileResponse = res.data.UserInfo;
-
+     let profileResponse = res.data.UserInfo;
+     setFname(profileResponse.fname)
+     setLname(profileResponse.lname)
+     setBalance(profileResponse.balance)
+     setEmail(profileResponse.email)
+     setStatus(profileResponse.status)
    }
 
   }).catch(function (error){
@@ -41,23 +52,44 @@ const Dashboard = () => {
      icon: 'info',
      title: 'Session expired'
      })
-   setTimeout(() => history.push("/login"), 500);
+   history.push("/login")
   }
   })
   
   });
   return (
     <>
-      <Router>
+     
       <Navbar />
       <Switch>
-      <Route exact path="/dashboard" component={Mylearning}/>
-      <Route path="/dashboard/savedcourses" component={Savedcourses} />
-      <Route path="/dashboard/postedcourses" component={Postedcourses} />
-      <Route path="/dashboard/myprofile" component={Myprofile} />
-      <Route path="/dashboard/payment" component={Payment}/>
+      <Route exact path="/dashboard">
+      <Mylearning fname={fname} lname={lname[0]} balance={balance}/>
+      </Route>
+      
+      <Route  path="/dashboard/savedcourses">
+      <Savedcourses/>  
+      </Route>
+      
+      <Route  path="/dashboard/createdcourses">
+      <Createdcourses/>  
+      </Route>
+
+      <Route  path="/dashboard/myprofile">
+      <Myprofile fname={fname} lname={lname} email={email} status={status}/>
+      </Route>
+     
+      <Route  path="/dashboard/createcourse">
+      <Createcourse/>  
+      </Route>
+        
+        
+      <Route  path="/dashboard/payment">
+      <Payment/>  
+      </Route>
+        
+    
       </Switch>
-      </Router>
+     
      
       
       <footer id="footer">

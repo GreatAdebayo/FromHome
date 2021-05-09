@@ -160,6 +160,30 @@ section {
   color: #aaaaaa;
   font-family: "Poppins", sans-serif;
 }
+.txt{
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 15px;
+  margin: 0 0 5px 0;
+  text-transform: uppercase;
+  color: #aaaaaa;
+  font-family: "Poppins", sans-serif;
+}
+
+.nav-item:hover{
+  border-bottom-style:solid;
+  border-color: #5fcf80;
+  border-width: 3px;
+  /* border-radius: 8px; */
+}
+
+
+.tx{
+  font-size: 14px;
+  font-family: '"Ubuntu", sans-serif';
+  color:#5fcf80
+}
+
 .section-title h5 {
   font-size: 14px;
   font-weight: 500;
@@ -718,6 +742,28 @@ transition: background-color 5000s ease-in-out 0s;
 .input-group-text{
   background-color: transparent !important;
 }
+select{
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+  background: none;
+  font-family: "Raleway", sans-serif;
+  }
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus,
+  select:-webkit-autofill:active {
+transition: background-color 5000s ease-in-out 0s;
+}
+
+textarea{
+  outline: 0px !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+  background: none;
+  font-family: "Raleway", sans-serif;
+  }
+
 
 .g{
   background-color: #5fcf80 !important;
@@ -740,11 +786,11 @@ color: #5fcf80 !important;
 /* dashboard nav */
 .navbar {
   background: #fff;
-  height: 80px;
+  height: 60px;
   display: flex;
   justify-content: start;
   align-items: center;
-  z-index: 500;
+
   /* box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25); */
  }
  
@@ -769,7 +815,7 @@ color: #5fcf80 !important;
   opacity: 0.9;
  }
  
- .nav-menu.active {
+ .nav-menu.act {
   left: 0;
   transition: 350ms;
  }
@@ -815,9 +861,21 @@ color: #5fcf80 !important;
   align-items: center;
  }
  
+
+
+ /* dashboard nav ends */
+
+
  .side-icon {
   margin-left: 15px;
  }
- 
 
- /* dashboard nav ends */
+ .aler{
+   border-left-style: solid;
+   /* border-right-style: solid; */
+   border-left-color: #3AC162;
+   /* border-right-color: #3AC162; */
+   background-color: #F6F7F6;
+   border-left-width: 6px;
+ }
+ 

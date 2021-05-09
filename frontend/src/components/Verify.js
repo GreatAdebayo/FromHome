@@ -51,7 +51,7 @@ const toggle = () => {
 setIsOpen(!isOpen)}
 const [resend, setResend] = useState(false);
 const [code, setCode] = useState({code:''});
-
+const [isRoll, setIsRoll] = useState(false)
 
 const handleChange = (e) => {
   let name = e.target.name;
@@ -60,13 +60,15 @@ const handleChange = (e) => {
 // code = inputRef.current.value;
 } 
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
+    setIsRoll(true)
   e.preventDefault();
     if (code.code) {
     let details = {email:email, code:code.code}
     axios.post(`${Baseurl}confirmcode.php`, JSON.stringify(details)).then(res => {
-    Coderesponse = res.data;
-      if(Coderesponse.CodeExpired){
+      Coderesponse = res.data;
+      setIsRoll(false);
+      if (Coderesponse.CodeExpired) {
         Toast2.fire({
           icon: 'info',
           title: 'Code Expired'
@@ -92,7 +94,8 @@ const handleChange = (e) => {
         setTimeout(() => history.push("/signup"), 1000);
         }
     })
-      }else {
+    } else {
+      setIsRoll(false);
        Toast2.fire({
        icon: 'warning',
        title: 'Please fill all input'
@@ -125,7 +128,7 @@ const handleChange = (e) => {
 
      <div className="col-lg-6" data-aos="fade-left" data-aos-delay="100">
      <div class="section-title mt-3">
-      <h2>ACCOUNT VERIFICATION</h2>
+      <h2>VERIFICATION</h2>
       <p>VERIFICATION CODE</p>
       </div>
            
@@ -139,7 +142,8 @@ const handleChange = (e) => {
       </div><br/>
       {resend ? <small className="ml-2" data-aos="fade" style={{fontFamily: '"Raleway" sans-serif', color:'#5fcf80', cursor:'pointer'}} onClick={resendCode}>Resend Code</small> : null}
      <div className="text-center">
-     <button className="btn g py-2 px-4 shadow font-weight-bold"> CONFIRM</button>
+     <button className="btn g py-2 px-4 shadow font-weight-bold">{isRoll ? <i class="fad fa-spinner fa-spin"></i> 
+      :null} CONFIRM</button>
        </div>
     </form>
      </div>

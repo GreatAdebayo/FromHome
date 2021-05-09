@@ -19,7 +19,7 @@ const toggle = () => {
     <section id="course-details" class="course-details">
          <div class="container" data-aos="fade-up">
          <div class="section-title">
-         <h2>Available React Courses</h2>
+         <h2>React Courses</h2>
          <p>React JS</p>
          </div>
         <Link to="/allcourses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back </p></Link>
