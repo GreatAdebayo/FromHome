@@ -28,22 +28,13 @@ const Toast = Swal.mixin({
 
 const Dashboard = () => {
   let history = useHistory();
-  const [fname, setFname] = useState("")
-  const [lname, setLname] = useState("")
-  const [balance, setBalance] = useState("")
-  const [email, setEmail] = useState("")
-  const [status, setStatus] = useState("")
-
+  const [details, setDetails] = useState({})
   useEffect(() => {
   let token = localStorage.getItem('Token');
   axios.post(`${Baseurl}profile.php`, JSON.stringify(token)).then(res => {
    if (res.status == 200) {
      let profileResponse = res.data.UserInfo;
-     setFname(profileResponse.fname)
-     setLname(profileResponse.lname)
-     setBalance(profileResponse.balance)
-     setEmail(profileResponse.email)
-     setStatus(profileResponse.status)
+     setDetails(profileResponse)
    }
 
   }).catch(function (error){
@@ -56,14 +47,14 @@ const Dashboard = () => {
   }
   })
   
-  });
+  }, []);
   return (
     <>
      
       <Navbar />
       <Switch>
       <Route exact path="/dashboard">
-      <Mylearning fname={fname} lname={lname[0]} balance={balance}/>
+      <Mylearning fname={details.fname}  lname={details.lname ? details.lname[0]: null}  balance={details.balance}/>
       </Route>
       
       <Route  path="/dashboard/savedcourses">
@@ -75,11 +66,11 @@ const Dashboard = () => {
       </Route>
 
       <Route  path="/dashboard/myprofile">
-      <Myprofile fname={fname} lname={lname} email={email} status={status}/>
+      <Myprofile fname={details.fname} lname={details.lname} email={details.email} status={details.status}/>
       </Route>
      
       <Route  path="/dashboard/createcourse">
-      <Createcourse/>  
+          <Createcourse userId={details.userid}/>
       </Route>
         
         

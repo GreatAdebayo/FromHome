@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import axios from 'axios';
+import {Baseurl} from '../components/Baseurl.js';
 
 const Toast2 = Swal.mixin({
    toast: true,
@@ -23,11 +24,13 @@ const Sections = () => {
    // DISPLAY COURSE DETAILS
    useEffect(() => {
    const allDetails = localStorage.getItem('details'); 
-   if (allDetails) { 
-    setLsDetails(JSON.parse(allDetails))
-    setShowDetails(true)   
-   } else {
-   setLsDetails({})  
+   if (allDetails) {  
+   setLsDetails(JSON.parse(allDetails))
+    setShowDetails(true) 
+   
+     } else {
+      setLsDetails({})
+        
    }
    
    // LOOPING OUT THE SECTIONS
@@ -50,19 +53,19 @@ const [lsDetails, setLsDetails] = useState({})
 const [lsSection, setLsSection] = useState([])
 const [showDetails, setShowDetails] = useState(false)
 const [showSection, setShowSection] = useState(false)
-   
+const [isRoll, setIsRoll] = useState(false)   
    
    
 const handleSection = () => {
 const LsSection = lsDetails.section 
 const sectionName = sectionRef.current.value;  
-const section = {name:`${sectionName}.`, content:'', file:[]}
+const section = {name:`${sectionName}.`, content:''}
    if (sectionName) {
       if (LsSection) {
       LsSection.push(section);
       localStorage.setItem('details', JSON.stringify(lsDetails))
       const sectionArray = localStorage.getItem('details');
-      setLsSection(JSON.parse(sectionArray).section)
+      setLsSection(JSON.parse(sectionArray).section)//TO MAKE IT DELETE LIVE ON SCREEEN
       Toast2.fire({
          icon: 'success',
          title: 'Section name addded'
@@ -87,7 +90,7 @@ const section = {name:`${sectionName}.`, content:'', file:[]}
    const selectOpt = sectionOption.current.value;
    const LsSection = lsDetails.section
    if (cont && selectOpt) {
-      if (LsSection) {
+   if (LsSection) {
    let check = LsSection.find(data => selectOpt  == data.name )
    if (check) {
    check.content = cont
@@ -113,51 +116,74 @@ const section = {name:`${sectionName}.`, content:'', file:[]}
         }
    
    }
-   const saveSection = (e) => {
+   const postCourse = (e) => {
       e.preventDefault();
       const sectionArray = JSON.parse(localStorage.getItem('details'));
       if (sectionArray) {
-      const section = sectionArray.section
+         const section = sectionArray.section
          if (section != '') {
-            history.push('/dashboard/createcourse/files')
+            let check = ''
+            section.forEach(sect => {
+               check = sect.content
+            });
+            if (check === '') {
+               Toast2.fire({
+                  icon: 'info',
+                  title: 'One or more content is empty'
+               })
+            } else {
+               setIsRoll(true)
+               const course = localStorage.getItem('details');
+               const token = localStorage.getItem('Token')
+               axios.post(`${Baseurl}postcourse.php`, course
+               ).then(res => {
+               let postResponse = res.data;
+               if(postResponse.CoursePosted) {
+                  setIsRoll(false);
+                  Swal.fire({
+                     position: 'top-end',
+                     icon: 'success',
+                     title: 'Course Successfully Posted',
+                     showConfirmButton: false,
+                     timer: 1500,
+                  })
+                  localStorage.removeItem('details');
+                  history.push('/dashboard/createcourse/files');
+                  }
+               })
+            }
+        
          } else {
             Toast2.fire({
                icon: 'info',
                title: 'Add Section'
-         })
+            })
          }
-      } else {
+     
+      }else {
          Toast2.fire({
             icon: 'error',
             title: 'No course details found'
           })
       }
-     
-    
    }
-   const deleteSection = (index) => {
-   // setLsSection(lsSection.splice(index, 1)) 
-      // let localSec = JSON.parse(localStorage.getItem('details'));
-      // let sec = localSec.section
-      // console.log
-   // let sect = localSec.section.find(data => data.index === index)
-   // if (sect) {
-   //      alert('seen')
-   //   } 
-      // setLsSection(lsSection => {
-      // const sect = [...lsSection];
-      // sect.splice(index, 1);
-      //    return sect;
-      // })
-      // localStorage.setItem('details', JSON.stringify(lsDetails))
-   //    let Items = JSON.parse(localStorage.getItem('details'));
-   //    // console.log(Items.section)
-   //    Items.section.forEach((item, index) => {
-   //    if(item.index == index) {
-   //       Items.section.splice(index, 1);
-   //     }
-   //    });
-   // localStorage.setItem('details', JSON.stringify(lsDetails))
+   const deleteSection = (i) => {
+      let localSec = JSON.parse(localStorage.getItem('details'));
+      let sec = localSec.section
+      sec.forEach(function sect(value, index) {
+      if (i === index) {
+      sec.splice(index, 1)
+      localStorage.setItem('details', JSON.stringify(localSec))
+      const sectionArray = localStorage.getItem('details');
+      setLsSection(JSON.parse(sectionArray).section) //TO MAKE IT DELETE LIVE ON SCREEEN
+      Toast2.fire({
+         icon: 'success',
+         title: 'Section deleted'
+      })
+      history.push('/dashboard/createcourse');
+      history.goBack();  
+      }
+      })
       
    }
    
@@ -169,7 +195,7 @@ const section = {name:`${sectionName}.`, content:'', file:[]}
    <div class="form-group">
    <div className="border px-3 pt-3 mb-4 rounded text-center">
    <p style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }} className="font-weight-bold"><i class="fas fa-puzzle-piece"></i> Course Sections <br /> <span>
-   <small style={{fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can always edit your details even after saved</small><br/>
+                   <small style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can always edit your details even after saved</small><br/>
    </span></p>
    </div>
    
@@ -244,11 +270,12 @@ const section = {name:`${sectionName}.`, content:'', file:[]}
       </div>
          ); })}        
       </div>
-    <button className="btn  g px-3 shadow font-weight-bold" style={{
+   <button className="btn g px-3 shadow font-weight-bold" style={{
     backgroundColor: '#5FCF80',
     color: 'white',
-    fontFamily: '"Ubuntu", sans-serif'
-   }} onClick={saveSection}>Add Files</button>
+    fontFamily:'"Ubuntu", sans-serif'
+   }} onClick={postCourse}>{isRoll ? <i class="fad fa-spinner fa-spin"></i> 
+   : null } Post Course <i class="fal fa-long-arrow-right"></i></button>
  
    </form>
     </div>

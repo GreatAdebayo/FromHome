@@ -34,7 +34,7 @@ const Myprofile = (props) => {
    </div>
     <form>
   {/* <img src="/assets/img/trainers/trainer-2.jpg" alt="..." class="rounded-circle" style={{width:'80px', height:'80px'}}/> */}
-  <p className="text-light rounded-circle shadow text-center p-auto" style={{ width: '80px', height: '80px', fontSize: '50px', backgroundColor: '#5fcf80' }}>{props.fname[0]}{props.lname[0]}</p>
+  <p className="text-light rounded-circle shadow text-center p-auto" style={{ width: '80px', height: '80px', fontSize: '50px', backgroundColor: '#5fcf80' }}>{props.fname ? props.fname[0]:null}{props.lname ? props.lname[0] : null}</p>
   <div class="form-row mt-3">
     <div class="form-group col-md-6">
       <label for="inputEmail4" className="tx" style={{fontFamily: '"Poppins" sans-serif', color:'#777777'}}>First Name</label>

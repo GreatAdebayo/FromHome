@@ -16,10 +16,10 @@ const Toast2 = Swal.mixin({
 })
 
 
-const Details = () => {
+const Details = (props) => {
 let history = useHistory();
- const [lsDetails, setLsDetails] = useState("")
- const [details, setDetails] = useState({category: '', title: '', cost: '', desc: '', section: [] });
+let courseCode = Math.random().toString(36).substr(2, 5);
+ const [details, setDetails] = useState({category: '', title: '', cost: '', desc: '', section: [], userId:props.userId, code:courseCode});
  const handleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value
@@ -54,7 +54,7 @@ let history = useHistory();
   <div class="form-group">
   <div className="border px-3 pt-3 mb-4 rounded text-center">
   <p style={{fontFamily: '"Poppins" sans-serif', color: '#777777' }} className="font-weight-bold"><i class="fas fa-info-circle"></i> Course Basic Details <br /> <span>
-   <small style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can always change details even after saving</small><br/>
+             <small style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can always change details even after saving</small><br/>
    </span></p>
   </div>
     <label for="exampleFormControlSelect1" className="tx font-weight-bold" style={{fontFamily: '"Poppins" sans-serif', color:'#777777'}}>Category</label>

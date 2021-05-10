@@ -13,7 +13,7 @@ class MyIndex {
  //API STARTS//
  public $response = array('UserExists'=>'', 'AccountCreated'=>'', 'VerifyCodeSent'=>'', 
  'CodeExpired'=>'', 'CodeCorrect'=>'', 'CodeWrong'=>'', 'VerifyCodeReSent'=>'', 'EmailNotFound'=>'',
- 'Auth'=>'', 'LoginSuccess'=>'', 'UserInfo'=>'', 'Verify'=>'');
+ 'Auth'=>'', 'LoginSuccess'=>'', 'UserInfo'=>'', 'Verify'=>'', 'CoursePosted'=>'');
 //API ENDS//
 
 
@@ -66,7 +66,7 @@ class MyIndex {
        $stmt = $this->conn->prepare($InsertVerifyCode); 
        $stmt->bind_param("s",  $userId);
        $stmt->execute();
-                          }
+                   }
            } 
           }
     echo json_encode($response);
@@ -244,18 +244,79 @@ class MyIndex {
     $res = $stmt->get_result();
     if($res->num_rows > 0){
     $myFetchedUser = $res->fetch_assoc();
+    $fetchedUserId =   $myFetchedUser['user_id'];
     $fetchedFname =   $myFetchedUser['first_name'];
     $fetchedLname = $myFetchedUser['last_name'];
     $fetchedEmail = $myFetchedUser['email'];
     $fetchedVerStatus = $myFetchedUser['verification_status'];
     $fetchedBalance = $myFetchedUser['balance'];
     $userInfo = array('fname'=>$fetchedFname , 'lname'=>$fetchedLname, 'email'=>$fetchedEmail, 
-    'status'=>$fetchedVerStatus, 'balance'=>$fetchedBalance);
+    'status'=>$fetchedVerStatus, 'balance'=>$fetchedBalance, 'userid'=>$fetchedUserId);
     $response['UserInfo'] = $userInfo;
   }
     echo json_encode($response);
    }
 
     //FETCH USER'S BASIC PROFILE ENDS//
+
+
+
+  //POST COURSE STARTS//
+public function postCourse($category, $cost, $desc, $title, $userId, $courseCode, $section){
+   $checkUser = "SELECT * FROM users_tb WHERE user_id = ?";
+   $stmt = $this->conn->prepare($checkUser);
+     $stmt->bind_param("s", $userId);
+     $stmt->execute();
+     $res = $stmt->get_result();
+     if($res->num_rows > 0){
+      $courseSql = "INSERT INTO courses_tb(user_id, title, description, category, cost, course_code) 
+      VALUES (?, ?, ?, ?, ?, ?)";
+      $stmt = $this->conn->prepare($courseSql); 
+      $stmt->bind_param("ssssss", $userId, $title, $desc, $category, $cost, $courseCode);
+      if($stmt->execute()){
+      $checkCourseId = "SELECT * FROM courses_tb WHERE user_id = ? and course_code = ?";
+      $stmt = $this->conn->prepare($checkCourseId);
+      $stmt->bind_param("ss", $userId, $courseCode);
+      $stmt->execute();
+      $res = $stmt->get_result();
+      if($res->num_rows > 0){
+       $myFetchedCourse = $res->fetch_assoc();
+       $courseId = $myFetchedCourse['course_id'];
+       $sectionName  = '';
+       $sectionContent  = '';
+       foreach ($section as $value) {
+       $sectionName = rtrim($value->name, '.');
+       $sectionContent  = rtrim($value->content, '.');
+      $sectionSql = "INSERT INTO course_section_tb(course_id, section_name, content) 
+      VALUES (?, ?, ?)";
+      $stmt = $this->conn->prepare($sectionSql); 
+      $stmt->bind_param("sss", $courseId, $sectionName, $sectionContent);
+      if($stmt->execute()){
+      $response['CoursePosted'] = 'CoursePosted';
+      }
+      }
+      }else{
+        echo 'error';
+             }
+      // if(!$stmt->execute()) 
+      // echo $stmt->error;
+      $stmt->close();
+     
+     }  
+    }
+
+    echo json_encode($response);
+   }
+
+//   //POST COURSE ENDS//
+
+
+
+
+
 }
+
+
+
+
 ?>

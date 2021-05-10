@@ -76,6 +76,7 @@ const submitForm = (e) => {
       title: 'Logged in successfully'
       })
       localStorage.setItem('Token', loginResponse.Auth);
+      localStorage.removeItem('details');
       setTimeout(() => history.push("/dashboard"), 500);
       } else if(loginResponse.IncorrectPwd) {
         Toast2.fire({

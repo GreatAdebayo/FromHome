@@ -7,7 +7,7 @@ import Howitworks from './Howitworks';
 import Swal from 'sweetalert2'
 
 
-const Createcourse = () => {
+const Createcourse = (props) => {
  
  return ( 
   <div>
@@ -55,7 +55,7 @@ const Createcourse = () => {
       <div className="mt-4 justify-content-center">
       <Switch>
       <Route path="/dashboard/createcourse/details">
-      <Details/>
+      <Details userId={props.userId}/>
       </Route>
                 
       <Route path="/dashboard/createcourse/section">

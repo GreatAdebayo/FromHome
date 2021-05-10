@@ -1,5 +1,5 @@
 import React from 'react'
-export const Baseurl = "https://fromhome.adebayogreat.dev/backend/"
+export const Baseurl = "http://localhost/fromhome/backend/"
 const Test = () => {
  return (
   <div>
