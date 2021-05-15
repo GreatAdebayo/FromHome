@@ -35,7 +35,7 @@ const Login = () => {
 useEffect(() => {
   localStorage.removeItem('Email');
 
-});
+},[]);
 let history = useHistory();
  const [isOpen, setIsOpen] = useState(false)
  const [value, setValue] = useState('Type your email');

@@ -1,13 +1,136 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Link as Link2 } from 'react-scroll';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';  
+import { useParams } from "react-router";
+import axios from 'axios';
+import { Baseurl } from '../components/Baseurl.js';
+import Swal from 'sweetalert2';
 
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 1500,
+  didOpen: (toast) => {
+  toast.addEventListener('mouseenter', Swal.stopTimer)
+  toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+ 
 
 const Coursedetails = () => {
 const [isOpen, setIsOpen] = useState(false)
+let {course} = useParams();
+let history = useHistory();
+  
+  useEffect(() => {
+  axios.post(`${Baseurl}coursedetails.php`, JSON.stringify(course)
+  ).then(res => {
+    if (res.status == 200) {
+    let CourseResponse = res.data.CourseDetails;
+    setCourseDetails(CourseResponse);
+  //  localStorage.setItem('courseTitle', JSON.stringify(courseDetails.title)) 
+   }
+ 
+  })
+  }, [])
+  
+  const saveCourse = () => {
+    if (localStorage.Token) {
+      let token = JSON.parse(localStorage.getItem('Token'))
+      let saveCourse = {
+      token: token, code: courseDetails.course_code, title: courseDetails.title,
+      desc: courseDetails.description, tutor: courseDetails.tutor_name, cost: courseDetails.cost
+      }
+      axios.post(`${Baseurl}savecourse.php`, JSON.stringify(saveCourse)
+      ).then(res => {
+        if (res.status == 200) {
+          let saveCourseResponse = res.data
+          if(saveCourseResponse.AlreadySaved) {
+            Toast.fire({
+              icon: 'info',
+              title: 'Course Already Saved'
+              }) 
+          } else if(saveCourseResponse.CourseSaved){
+            Toast.fire({
+              icon: 'success',
+              title: 'Course Saved'
+              })
+          }
+        }
+      }).catch(function (error){
+        if (error.response) {
+         Toast.fire({
+          icon: 'info',
+          title: 'Session Expired'
+          })
+        history.push("/login")
+       }
+       })
+    } else {
+      Toast.fire({
+        icon: 'info',
+        title: 'Login In to Save Course'
+        })
+      history.push('/login')
+    }
+  }
 
+const startCourse = () => {
+  if (localStorage.Token) {
+    let token = JSON.parse(localStorage.getItem('Token'))
+    let startCourse = {
+    token: token, code: courseDetails.course_code, title: courseDetails.title,
+    desc: courseDetails.description, tutor: courseDetails.tutor_name, cost: courseDetails.cost
+    }
+    axios.post(`${Baseurl}startcourse.php`, JSON.stringify(startCourse)
+    ).then(res => {
+      if (res.status == 200) {
+        let saveCourseResponse = res.data
+        if(saveCourseResponse.WelcomeBack) {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Welcome Back',
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            confirmButtonText: "Proceed!",
+          })
+          history.push(`/takecourse/${course}`)
+        } else if(saveCourseResponse.HappyLearning){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Happy Learning',
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            confirmButtonText: "Proceed!",
+          })
+          history.push(`/takecourse/${course}`)
+        }
+      }
+    }).catch(function (error){
+      if (error.response) {
+       Toast.fire({
+        icon: 'info',
+        title: 'Session Expired'
+        })
+      history.push("/login")
+     }
+     })
+  } else {
+    Toast.fire({
+      icon: 'info',
+      title: 'Login In to Start Course'
+      })
+    history.push('/login')
+  }
+}
+  
+  
+const [courseDetails, setCourseDetails] = useState({})
 const toggle = () => {
    setIsOpen(!isOpen);
   };
@@ -19,45 +142,55 @@ const toggle = () => {
     <section id="course-details" class="course-details">
          <div class="container" data-aos="fade-up">
          <div class="section-title">
-         <h2>React Courses</h2>
-         <p>React JS</p>
+         {/* <h2>React Courses</h2> */}
+         <p>{courseDetails.category}</p>
          </div>
-        <Link to="/allcourses" style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back </p></Link>
-        <div class="row">
+         <Link to={`/allcourses/${courseDetails.category}`}style={{textDecoration: 'none', color: '#5fcf80'}}> <p><i class="fas fa-long-arrow-alt-left"></i> Back </p></Link>
+         <div class="row">
           <div class="col-lg-8">
-            <img src="assets/img/details.jpg" class="img-fluid rounded" alt=""/>
-            <h3>Et enim incidunt fuga tempora</h3>
+        {courseDetails.category == 'vue' ? <i class="fab fa-vuejs fa-5x" style={{ color: "#41B883" }}></i> :
+         courseDetails.category == 'angular' ? <i class="fab fa-angular fa-5x" style={{ color: "#C3002F" }}></i> :
+         courseDetails.category == 'react' ? <i class="fab fa-react fa-5x" style={{ color: " #61DBFB" }}></i>
+        :courseDetails.category == 'html' ? <i class="fab fa-html5 fa-5x" style={{ color: '#ffbb2c' }}></i> :
+        courseDetails.category == 'bootstrap' ? <i class="fab fa-bootstrap fa-5x" style={{ color: "#8513FB" }}></i> :
+        courseDetails.category == 'php' ? <i class="fab fa-php fa-5x" style={{ color: "#8892BF" }}></i> :
+        courseDetails.category == 'laravel' ? <i class="fab fa-laravel fa-5x" style={{ color: "#FF2E20" }}></i> :
+        courseDetails.category == 'wordpress' ? <i class="fab fa-wordpress fa-5x" style={{ color: "#003C56" }}></i> :
+        courseDetails.category == 'git' ? <i class="fab fa-git fa-5x" style={{ color: "#ffa76e" }}></i> :
+        courseDetails.category == 'graphics design' ? <i class="fas fa-photo-video fa-5x" style={{color: '#5578ff'}}></i>:
+        courseDetails.category == 'others' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>:
+        courseDetails.category == 'andriod development' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>: null              
+        }
+            <h3 className="text-capitalize">{courseDetails.title}</h3>
             <p>
-              Qui et explicabo voluptatem et ab qui vero et voluptas. Sint voluptates temporibus quam autem. Atque nostrum voluptatum laudantium a doloremque enim et ut dicta. Nostrum ducimus est iure minima totam doloribus nisi ullam deserunt. Corporis aut officiis sit nihil est. Labore aut sapiente aperiam.
-              Qui voluptas qui vero ipsum ea voluptatem. Omnis et est. Voluptatem officia voluptatem adipisci et iusto provident doloremque consequatur. Quia et porro est. Et qui corrupti laudantium ipsa.
-              Eum quasi saepe aperiam qui delectus quaerat in. Vitae mollitia ipsa quam. Ipsa aut qui numquam eum iste est dolorum. Rem voluptas ut sit ut.
-            </p>
+               {courseDetails.description}
+           </p>
           </div>
           <div class="col-lg-4">
 
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Trainer</h5>
-              <p><a href="#">Walter White</a></p>
+              <p><a>{courseDetails.tutor_name}</a></p>
             </div>
 
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Course Fee</h5>
-              <p>$165</p>
+                 <p>{courseDetails.cost == 'Free' ? 'Free' : <>₦{courseDetails.cost}</>}</p>
             </div>
 
             <div class="course-info d-flex justify-content-between align-items-center">
-              <h5>Available Seats</h5>
+              <h5>Number of Students</h5>
               <p>30</p>
             </div>
 
          <div class="course-info d-flex justify-content-between align-items-center">
-              <h5>Schedule</h5>
-              <p>5.00 pm - 7.00 pm</p>
+              <h5>Date Created</h5>
+              <p>{courseDetails.date_created}</p>
         </div>
         
          <div class="course-info d-flex justify-content-between align-items-center">
-         <Link to="/coursedetails" style={{ cursor: 'pointer', textDecoration: 'none' }}><h4><i class="fad fa-play"></i> Start Course</h4></Link>
-         <Link to="/coursedetails" style={{ cursor: 'pointer', textDecoration: 'none' }}><h4><i class="fad fa-save"></i> Save Course </h4></Link>
+         <Link  style={{ cursor: 'pointer', textDecoration: 'none' }} onClick={startCourse}><h4><i class="fad fa-play"></i> Start Course</h4></Link>
+         <Link style={{ cursor: 'pointer', textDecoration: 'none' }} onClick={saveCourse}><h4><i class="fad fa-save"></i> Save Course </h4></Link>
             </div>
 
           </div>

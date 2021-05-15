@@ -1,15 +1,16 @@
 import React, {useEffect, useState, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import { Baseurl } from '../components/Baseurl.js';
+import { useHistory } from 'react-router-dom'
+
 
 
 const Toast2 = Swal.mixin({
    toast: true,
    position: 'top-end',
    showConfirmButton: false,
-   timer: 1500,
+   timer: 2000,
    didOpen: (toast) => {
    toast.addEventListener('mouseenter', Swal.stopTimer)
    toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -17,175 +18,136 @@ const Toast2 = Swal.mixin({
 })
 
 
-const Files = (props) => {
+const Files = () => {
+   let history = useHistory();
    useEffect(() => {
-      const allDetails = localStorage.getItem('details'); 
-      if (allDetails) {  
-      setLsDetails(JSON.parse(allDetails))
-       setShowDetails(true) 
-      
-        } else {
-         setLsDetails({})
-           
-      }
-      
-      // LOOPING OUT THE SECTIONS
-      const sectionArray = localStorage.getItem('details');
-      if (sectionArray) {
-         setLsSection(JSON.parse(sectionArray).section)
-         if (lsSection === '') {
-            setShowSection(false)
-         } else {
-            setShowSection(true)
+      const courseId = localStorage.getItem('courseId');
+      axios.post(`${Baseurl}coursesections.php`, JSON.stringify(courseId)
+      ).then(res => {
+         if (res.status == 200) {
+            if (res.data) {
+         let sectionResponse = res.data
+         setSection(sectionResponse)
+         }else{
+            setSection([])  
          }
-     
-         } else {
-      setLsSection([])   
-      } 
-     
-      }, [])
-   
-  const fileRef = useRef(null)
-  const sectionRef = useRef(null)
-  const [lsDetails, setLsDetails] = useState({})
-  const [lsSection, setLsSection] = useState([])
-  const [showDetails, setShowDetails] = useState(false)
-  const [showSection, setShowSection] = useState(false)
-  const [fileName, setFileName] = useState('')
-  const [isRoll, setIsRoll] = useState(false)
-  const [file, setFile] = useState('')
+
+         }
+      })  
+   }, [])
    
 
-  const handleChange = (e) => {
-   setFileName(fileRef.current.value);
-   setFile(e.target.files[0])
+ 
+  const [section, setSection] = useState([])
+  const [fileName, setFileName] = useState('')
+  const [file, setFile] = useState('')
+  const [isRoll, setIsRoll] = useState(false) 
+
+   const chooseFile = (e) => {
+      let value = e.target.value;
+      setFileName(value);
+      let file = e.target.files[0];
+      setFile(file)
    if (setFileName) {
     Toast2.fire({
     icon: 'success',
     title: 'File Chosen'
     }) 
    }  
-     
    }
 
-const handleFile = () => {
-const LsSection = lsDetails.section 
-const sectionName = sectionRef.current.value;
-if (fileName && sectionName) {
-if (LsSection){
-   let check = LsSection.find(data => sectionName == data.name)
-   if (check) {
-   let fileArray = check.file
-   fileArray.push(fileName)
-   localStorage.setItem('details', JSON.stringify(lsDetails))
-   const sectionArray = localStorage.getItem('details');
-   Toast2.fire({
-         icon: 'success',
-         title: 'File attached'
-   })
-   setLsSection(JSON.parse(sectionArray).section)
- }   
-   }
-} else {
-   Toast2.fire({
-      icon: 'info',
-      title: 'Please choose a file'
-      }) 
-}
-}
-   
-   const postCourse = (e) => {
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append('myFile', file, file.name)
-      // setIsRoll(true)
-      console.log(fileName)
-      axios.post(`${Baseurl}test.php`, formData, {
-         headers: {
-            'content-type': 'multipart/form-data'
+   const addFile = (id) => {
+   setIsRoll(true)
+   const formData = new FormData();
+   if(file) {
+      formData.append('myFile', file);
+   axios.post(`${Baseurl}postfiles.php`, formData, {
+      headers: {
+         'content-type': 'multipart/form-data',
+         'Authorization':  id
          }
-      }).then(res => {
-         console.log(res.data)
-      })
-
+   }).then(res => {
+      if (res.status == 200) {
+         let postFileRes = res.data
+         setIsRoll(false)
+         if (postFileRes.FileNotSupported) {
+            Toast2.fire({
+               icon: 'error',
+               title: 'File not Supported'
+            })
+         }else if (postFileRes.FileNotUploaded) {
+            Toast2.fire({
+               icon: 'error',
+               title: 'Uploaded Failed'
+            })
+         } else if (postFileRes.FileUploaded) {
+            Toast2.fire({
+               icon: 'success',
+               title: 'File Uploaded successfully'
+            })
+         history.push('/preview');
+         history.goBack();
+         } else if (postFileRes.FileLarge) {
+            Toast2.fire({
+               icon: 'info',
+               title: 'File too Large'
+            })
+         } 
+      }
+         }) 
+   } else {
+      setIsRoll(false)
+      Toast2.fire({
+         icon: 'info',
+         title: 'Choose a File'
+         }) 
    }
+  
+   }
+
+
+
 
   return (
-    <div className="border p-4 rounded">
+    <div className="border p-4 rounded m-4">
     <form data-aos="fade-up">
     <div class="form-group">
     <div className="border px-3 pt-3 mb-4 rounded text-center">
-   <p style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }} className="font-weight-bold"><i class="fas fa-paperclip"></i> Attach Files <br /> <span>
-  <small style={{fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can't make any changes once course is posted</small>
+   <p style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }} className="font-weight-bold"><i class="fas fa-paperclip"></i> Add Files <br /> <span>
+  <small style={{fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can add Videos, PDF, Text Files etc.</small>
   </span></p>
    </div>
           
-  {showDetails ? <div class="aler py-2 pl-2 mb-3 tx" style={{ color: '#777777' }}>
-  <p className="text-uppercase"><strong>Course Details</strong></p>
-  <strong>Course Title:</strong> <span className="text-uppercase">{lsDetails.title}</span> <br/>
-  <strong>Category:</strong> <span className="text-uppercase">{lsDetails.category}</span> <br />
-  <strong>Cost:</strong> <span className="text-uppercase">{lsDetails.cost == '' ? 'Free' : <>₦{lsDetails.cost}</>}</span>          
-  </div> : null}
-
-  <label className="btn g px-2 shadow mt-4">
-   <strong> Choose File</strong> <input type="file" hidden multiple ref={fileRef} onChange={handleChange}/>
-    </label>
-              
-   {fileName == '' ? null : <div class="aler py-2 pl-2 mb-3 tx" style={{ color: '#777777' }}>
-   <strong>File Name:</strong> {fileName.split(/[\\/]/).pop()}
-   </div>}
 
 
-   <div class="form-group">
-   <small className="tx font-weight-bold" style={{fontFamily: '"Poppins" sans-serif', color:'#777777'}}>Choose Section for this File</small>
-   <div class="input-group mb-3">
-   <select class="form-control form-control"  type="text" ref={sectionRef}>
-   {lsSection.map((item, index) => {
-      return (
-    <option key={index}>{item.name}</option>
-      );
-      })} 
-   </select>
-   <div class="input-group-append">
-   <span class="input-group-text btn g font-weight-bold border-0" id="basic-addon2"  onClick={handleFile}>Add</span>
-   </div>
-    </div>
-    </div>
-
-
-
-
-
-
-    <div className="row">
-    {showSection ? <p className="tx text-uppercase" style={{color:'#777777'}}><strong>Course Sections:</strong></p>
-     :null}
-    {lsSection.map((item, index) => {
-      return (
+   <div className="row">
+    {setSection ? <p className="tx text-uppercase" style={{color:'#777777'}}><strong>Course Sections:</strong></p>
+   : null}
+     {fileName == '' ? null : <div class="aler py-3 pl-2 mb-3 tx" style={{ color: '#777777' }}>
+      <strong>File Name:</strong> {fileName.split(/[\\/]/).pop()} <br/> {isRoll ? <span><i class="fad fa-spinner fa-spin fa-2x mr-2 mt-1" style={{color:'#5fcf80'}}></i>Uploading, please wait, do not refresh page...</span>
+     : null } 
+      </div>}            
+  
+    {section.map((item, index) => {
+       return (
       <div className="col-md-3">
-      <div class="aler py-1 px-2 mb-3 tx" style={{ color: '#777777' }}>
+      <div class="aler py-1 px-3 mb-3 pt-3 tx" style={{ color: '#777777' }}>
       <>
-      <strong class="text-uppercase mr-3" key={index}>{index+1}. {item.name}</strong>
+      <strong class="text-uppercase mr-3" key={index}>{index+1}. {item.section_name}</strong>
       <p><strong>Content:</strong> {item.content.length > 15 ? `${item.content.substring(0, 15)}...` : item.content == '' ? 'No Content' : <>{item.content}</>} <br />
-      <span><p><strong>File: {item.file == '' ? 'No File Attached' : 'File Attached'}</strong></p> </span></p>
-            
+      <span><p><strong>File: {item.files == 0 ? 'No File Attached' : item.files}</strong></p> </span>  <label className="btn g btn-sm">
+     <strong> Choose File</strong> <input type="file" hidden onChange={chooseFile}/>
+      </label> <a className="btn g float-right btn-sm" onClick={()=>addFile(item.section_id)}><strong>Add</strong> </a>  </p>    
       </>
        </div> 
       </div>
-         ); })}        
-      </div>
+       );
+    })}   
+   </div>
 
-
-
-   <button className="btn g px-3 shadow font-weight-bold" style={{
-    backgroundColor: '#5FCF80',
-    color: 'white',
-    fontFamily:'"Ubuntu", sans-serif'
-   }} onClick={postCourse}>{isRoll ? <i class="fad fa-spinner fa-spin"></i> 
-   : null } Post Course <i class="fal fa-long-arrow-right"></i></button>
    </div>
    </form>
-      </div>
+   </div>
  )
 }
 

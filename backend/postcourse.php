@@ -14,6 +14,7 @@ function trimInputs($val){
   return trim($val);
  } 
 $category = trimInputs($course->category); 
+$lowCategory = strtolower($category);
 $cost = trimInputs($course->cost);
 $desc = trimInputs($course->desc);
 $title = trimInputs($course->title);
@@ -21,5 +22,5 @@ $userId = trimInputs($course->userId);
 $courseCode = trimInputs($course->code);
 $section = $course->section;
 $newIndex = new MyIndex;
-$newIndex->postCourse($category, $cost, $desc, $title, $userId, $courseCode, $section);
+$newIndex->postCourse($lowCategory, $cost, $desc, $title, $userId, $courseCode, $section);
 ?>

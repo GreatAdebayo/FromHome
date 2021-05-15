@@ -24,6 +24,8 @@ const Myprofile = (props) => {
     })
     setTimeout(() => history.push("/login"), 500);
     localStorage.removeItem('Token');
+    localStorage.removeItem('code');
+    localStorage.removeItem('courseId');
   }
  return (
   <div>
@@ -74,8 +76,8 @@ const Myprofile = (props) => {
     <span class="input-group-text"><i class="fas fa-badge-check"></i></span>
   </div>
   <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" value={props.status == 'true' ? 'Verified' : 'NotVerified'} disabled style={{fontFamily:'"Ubuntu", sans-serif'}}/>
-    {props.status != 'true'?  <div class="input-group-append" style={{fontFamily: '"Nunito", sans-serif', backgroundColor:'#5fcf80', cursor:'pointer'}}>
-    <span class="input-group-text text-light border-0 rounded">Verify Now</span>
+    {props.status != 'true'?  <div class="input-group-append border-0 rounded" style={{fontFamily: '"Nunito", sans-serif', backgroundColor:'#5fcf80', cursor:'pointer'}}>
+    <span class="input-group-text text-light">Verify Now</span>
      </div> : null}
      </div>
         </div>

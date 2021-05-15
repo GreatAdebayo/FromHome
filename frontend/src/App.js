@@ -11,6 +11,9 @@ import Dashboard from './components/Dashboard.js';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Preview from './components/Preview';
+import Takecourse from './components/Takecourse';
+import CoursePreview  from './components/Coursepreview';
 
 
 AOS.init();
@@ -22,12 +25,15 @@ function App() {
      
           <Route exact path="/" component={Home}/>
           <Route  path="/courses" component={Courses}/>
-          <Route  path="/allcourses" component={AllCourses}/>
-          <Route  path="/coursedetails" component={Coursedetails}/>
+          <Route  path="/allcourses/:course" component={AllCourses}/>
+          <Route  path="/coursedetails/:course" component={Coursedetails}/>
           <Route path="/login" component={Login}/>
           <Route  path="/signup" component={Signup}/>
           <Route  path="/verify" component={Verify}/>
-          <Route path="/dashboard"  component={Dashboard} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/preview" component={Preview} />
+        <Route path="/takecourse/:course" component={Takecourse} />
+        <Route path="/coursepreview/:course"  component={CoursePreview} />
        
         </Router>
       

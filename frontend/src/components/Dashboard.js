@@ -41,7 +41,7 @@ const Dashboard = () => {
    if (error.response) {
     Toast.fire({
      icon: 'info',
-     title: 'Session expired'
+     title: 'Session Expired'
      })
    history.push("/login")
   }
@@ -62,7 +62,7 @@ const Dashboard = () => {
       </Route>
       
       <Route  path="/dashboard/createdcourses">
-      <Createdcourses/>  
+          <Createdcourses earning={details.earning}/>
       </Route>
 
       <Route  path="/dashboard/myprofile">
@@ -70,7 +70,7 @@ const Dashboard = () => {
       </Route>
      
       <Route  path="/dashboard/createcourse">
-          <Createcourse userId={details.userid}/>
+       <Createcourse userId={details.userid}/>
       </Route>
         
         

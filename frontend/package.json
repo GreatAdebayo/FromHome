@@ -18,13 +18,17 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-loading-skeleton": "^2.2.0",
+    "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-script-tag": "^1.1.2",
     "react-scripts": "4.0.3",
     "react-scroll": "^1.8.2",
+    "reactjs-media": "^1.5.1",
+    "redux": "^4.1.0",
     "styled-components": "^5.2.3",
     "sweetalert2": "^10.16.7",
     "sweetalert2-react-content": "^3.3.2",
+    "video-react": "^0.14.1",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

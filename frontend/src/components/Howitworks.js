@@ -15,7 +15,7 @@ const Howitworks = () => {
              <li><i className="bi bi-check-circle"></i> Click the <strong>Details</strong> button at the top to fill basic course details and save.</li>
              <li><i className="bi bi-check-circle"></i> Proceed to click the <strong>Section</strong> button at the top to fill out the section details and post your course.</li>
              <li><i className="bi bi-check-circle"></i> Sections are various topics your course contains. Fill all section details</li>
-           <li><i className="bi bi-check-circle"></i> If there are <strong>Files</strong> for your courses, click the <strong>Files</strong> button at the top to attach files to each sections of your course, <br /> you can leave empty if there are not files to be attached.</li>
+           <li><i className="bi bi-check-circle"></i> If there are <strong>Files</strong> for your courses, you can do that under the preview section.</li>
            <li><i className="bi bi-check-circle"></i>Lastly, You can preview your course(s) in your <strong>Dashboard</strong></li>
             </ul>
      </div> 

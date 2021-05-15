@@ -6,8 +6,8 @@ import {IoMdLogOut} from 'react-icons/io';
 
 export const SidebarData = [
   {
-    title: 'Home Page',
-    path: '/',
+    title: 'Take a Course',
+    path: '/courses',
     icon: <i class="fas fa-home" style={{color:'#3ac162'}}></i>,
     cName: 'nav-text'
   },
@@ -18,13 +18,13 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Create a Course',
+    title: 'Create Course',
     path: '/dashboard/createcourse',
     icon: <IoMdLogOut  style={{color:'#3ac162'}}/>,
     cName: 'nav-text'
   },
   {
-    title: 'Created Courses',
+    title: `Tutor's Portal`,
     path: '/dashboard/createdcourses',
     icon: <IoIcons.IoMdPeople  style={{color:'#3ac162'}}/>,
     cName: 'nav-text'

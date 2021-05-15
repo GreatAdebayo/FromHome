@@ -3,9 +3,17 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { Link } from 'react-scroll';
 import { Link as Link2 } from 'react-router-dom';
-const Home = () => {
-  const [isOpen, setIsOpen] = useState(false)
+import Skeleton from 'react-loading-skeleton';
 
+
+
+
+
+
+const Home = () => {
+const [isOpen, setIsOpen] = useState(false)
+const [skeleton, Setskeleton] = useState(false);
+  
   const toggle = () => {
    setIsOpen(!isOpen);
   };
@@ -14,10 +22,10 @@ const Home = () => {
     <>
       <Navbar  toggle={toggle}/>
       <Sidebar isOpen={isOpen} toggle={toggle}/>
-        {/* Hero section starts */}
+    {/* Hero section starts */}
    <section id="hero" className="d-flex justify-content-center align-items-center">
    <div className="container position-relative" data-aos="zoom-in" data-aos-delay="100">
-    <h1>Learning Today, <br /> Leading Tomorrow</h1>
+    <h1>Learn Today <br /> Learn From Home</h1>
    <h2>We make learning convenient and teaching easy</h2>
    <Link2 to="/courses"><a  className="btn-get-started">Take a Course <i class="fal fa-arrow-right"></i></a></Link2>
    </div>
@@ -121,100 +129,110 @@ const Home = () => {
       {/* Why us section ends */}
       
 {/* Courses us section starts */}
-<section id="courses" class="features mt-4">
+<section id="courses" class="features mt-5">
       <div class="container" data-aos="fade-up">
-
-      <div class="section-title mt-3">
+      <div class="section-title mt-5">
       <h2>Courses</h2>
-            <p>Popular Courses</p>
-          </div>
+      <p>Our Courses</p>
+     <Link2 to="/" style={{textDecoration: 'none'}}> <h5><i class="fas fa-long-arrow-alt-left"></i> Home</h5></Link2>
+      </div>     
      <div class="row" data-aos="zoom-in" data-aos-delay="100">
+      
       <div class="col-lg-3 col-md-4">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="fab fa-html5" style={{color: '#ffbb2c'}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>HTML</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/html"}   style={{ textDecoration: 'none' }}><h3><a>HTML</a></h3></Link2>
+      </div>}     
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="ri-bar-chart-box-line" style={{color: '#5578ff'}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Graphics Design</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/graphics design"} style={{ textDecoration: 'none' }}><h3><a>Graphics Design</a></h3></Link2>
+      </div>}
       </div>
            
     <div class="col-lg-3 col-md-4 mt-4 mt-md-0">
-    <div class="icon-box">
+    {skeleton ? <Skeleton  count={3} duration={2}/> : <div class="icon-box">
     <i class="fab fa-android" style={{color:" #e80368"}}></i>
-    <Link2 to="/allcourses"  style={{ textDecoration: 'none' }}><h3><a>Andriod Development</a></h3></Link2>
-    </div>
+    <Link2 to={"/allcourses/andriod development"}  style={{ textDecoration: 'none' }}><h3><a>Andriod Development</a></h3></Link2>
+    </div> }
     </div>
     
            
-     <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
-     <div class="icon-box">
+    <div class="col-lg-3 col-md-4 mt-4 mt-lg-0">
+     {skeleton ? <Skeleton  count={3} duration={2}/>:<div class="icon-box">
      <i class="fab fa-react" style={{color:" #e361ff"}}></i>
-     <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>React</a></h3></Link2>
+     <Link2 to={"/allcourses/react"} style={{ textDecoration: 'none' }}><h3><a>React</a></h3></Link2>
+     </div> }        
      </div>
-      </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-angular" style={{color: "#47aeff"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Angular</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/angular"} style={{ textDecoration: 'none' }}><h3><a>Angular</a></h3></Link2>
+      </div> }
+      
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-git"  style={{color: "#ffa76e"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>GIT</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/git"} style={{ textDecoration: 'none' }}><h3><a>GIT</a></h3></Link2>
+      </div>}
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-bootstrap"  style={{color: "#11dbcf"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Bootstrap</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/bootstrap"} style={{ textDecoration: 'none' }}><h3><a>Bootstrap</a></h3></Link2>
+      </div> }
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-wordpress"  style={{color: "#4233ff"}}></i>
-      <Link2 to="/allcourses"  style={{ textDecoration: 'none' }}><h3><a>Wordpress</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/wordpress"}  style={{ textDecoration: 'none' }}><h3><a>Wordpress</a></h3></Link2>
+      </div>}
       </div>
            
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ?  <Skeleton  count={3} duration={2}/> :  <div class="icon-box">
       <i class="fab fa-vuejs" style={{color: "#b2904f"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Vue</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/vue"}  style={{ textDecoration: 'none' }}><h3><a>Vue</a></h3></Link2>
+      </div>}
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/> : <div class="icon-box">
       <i class="fab fa-laravel"  style={{color: "#b20969"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Laravel</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/laravel"} style={{ textDecoration: 'none' }}><h3><a>Laravel</a></h3></Link2>
+      </div>}
       </div>
            
 
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>  :  <div class="icon-box">
       <i class="fab fa-php" style={{color: "#ff5828"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>PHP</a></h3></Link2>
-      </div>
+      <Link2 to={"/allcourses/php"} style={{ textDecoration: 'none' }}><h3><a>PHP</a></h3></Link2>
+      </div>}
       </div>
       
       <div class="col-lg-3 col-md-4 mt-4">
-      <div class="icon-box">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
+      <i class="fab fa-discourse" style={{color: "#29cc61"}}></i>
+      <Link2 to={"/allcourses/Others"} style={{ textDecoration: 'none' }}><h3><a>Others</a></h3></Link2>
+      </div>}
+             
+      {/* <div class="col-lg-3 col-md-4 mt-4">
+      {skeleton ? <Skeleton  count={3} duration={2}/>: <div class="icon-box">
       <i class="fab fa-java"  style={{color: "#29cc61"}}></i>
-      <Link2 to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Java</a></h3></Link2>
-      </div>
+      <Link to="/allcourses" style={{ textDecoration: 'none' }}><h3><a>Java</a></h3></Link>
+      </div>}
+      </div> */}
+             
       </div>
       </div>
 

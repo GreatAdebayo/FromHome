@@ -68,19 +68,19 @@ const section = {name:`${sectionName}.`, content:''}
       setLsSection(JSON.parse(sectionArray).section)//TO MAKE IT DELETE LIVE ON SCREEEN
       Toast2.fire({
          icon: 'success',
-         title: 'Section name addded'
+         title: 'Section Name Addded'
        })  
       } else {
          Toast2.fire({
             icon: 'error',
-            title: 'No course details found'
+            title: 'No Course Details Found'
           })
       }
      
    } else {
       Toast2.fire({
          icon: 'info',
-         title: 'Add Section name'
+         title: 'Add Section Name'
        }) 
 }
  
@@ -98,20 +98,20 @@ const section = {name:`${sectionName}.`, content:''}
    const sectionArray = localStorage.getItem('details');
    Toast2.fire({
          icon: 'success',
-         title: 'Content addded'
+         title: 'Content Addded'
    })
    setLsSection(JSON.parse(sectionArray).section)
       }
       } else {
       Toast2.fire({
       icon: 'error',
-      title: 'No course details found'
+      title: 'No Course Details Found'
           })  
              }
       } else {
          Toast2.fire({
             icon: 'info',
-            title: 'Add content'
+            title: 'Add Content'
       })
         }
    
@@ -143,12 +143,21 @@ const section = {name:`${sectionName}.`, content:''}
                   Swal.fire({
                      position: 'top-end',
                      icon: 'success',
-                     title: 'Course Successfully Posted',
-                     showConfirmButton: false,
-                     timer: 1500,
-                  })
-                  localStorage.removeItem('details');
-                  history.push('/dashboard/createcourse/files');
+                     title: 'Course Posted',
+                     showConfirmButton: true,
+                     allowOutsideClick: false,
+                     confirmButtonText: "Proceed!",
+                   }).then((result) => {
+                     if (result.isConfirmed) {
+                       Swal.fire(
+                         `You can manage your course under the tutor's portal.`,
+            
+                       )
+                     }
+                     localStorage.removeItem('details');
+                     history.push('/dashboard/createdcourses');
+                   })
+                  
                   }
                })
             }
@@ -163,7 +172,7 @@ const section = {name:`${sectionName}.`, content:''}
       }else {
          Toast2.fire({
             icon: 'error',
-            title: 'No course details found'
+            title: 'No Course Details Found'
           })
       }
    }
@@ -195,7 +204,7 @@ const section = {name:`${sectionName}.`, content:''}
    <div class="form-group">
    <div className="border px-3 pt-3 mb-4 rounded text-center">
    <p style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }} className="font-weight-bold"><i class="fas fa-puzzle-piece"></i> Course Sections <br /> <span>
-                   <small style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can always edit your details even after saved</small><br/>
+                   <small style={{ fontFamily: '"Poppins" sans-serif', color: '#777777' }}>You can go back to change details even after saved</small><br/>
    </span></p>
    </div>
    
@@ -217,7 +226,7 @@ const section = {name:`${sectionName}.`, content:''}
  </div>
 </div>
 
-          {/* SECTION LOOP */}
+   {/* SECTION LOOP */}
    <div className="row">
    {showSection ? <p className="tx text-uppercase" style={{color:'#777777'}}><strong>Course Sections:</strong></p>
      :null}

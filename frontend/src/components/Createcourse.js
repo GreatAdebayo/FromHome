@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Details from './Details';
-import Files from './Files';
 import Sections from './Sections';
 import Howitworks from './Howitworks';
 import Swal from 'sweetalert2'
@@ -20,7 +21,7 @@ const Createcourse = (props) => {
       }}>
       <div class="container" data-aos="zoom-in">
         <div class="text-center">
-          <h3>Tutors Portal</h3>
+          <h3>Create Course</h3>
       <p> Create your courses, and let millions of students learn from them. </p>
       <Link to="/dashboard/createcourse/howitworks" class="cta-btn" style={{cursor:'pointer'}} >See how it works</Link>
         </div>
@@ -39,16 +40,12 @@ const Createcourse = (props) => {
              
   <ul class="nav nav-pills nav-fill mt-4">
    <li class="nav-item">
-  <Link to="/dashboard/createcourse/details" class="nav-link txt" aria-current="page"  style={{color:'#5fcf80', fontWeight:'700'}}>DETAILS</Link>
+  <NavLink to="/dashboard/createcourse/details" class="txt" aria-current="page"  style={{color:'#5fcf80', fontWeight:'700', textDecoration:'none'}} activeStyle={{borderBottomStyle:'solid', borderColor:'#5fcf80', borderWidth:'3px',paddingLeft:'15px', paddingRight:'15px', borderRadius:'3px'}}>DETAILS</NavLink>
    </li>
    <li class="nav-item">
   
-   <Link to="/dashboard/createcourse/section" class="nav-link txt" style={{color:'#5fcf80', fontWeight:'700'}} >SECTIONS</Link>
+   <NavLink to="/dashboard/createcourse/section" class="txt" style={{color:'#5fcf80', fontWeight:'700', textDecoration:'none'}}  activeStyle={{borderBottomStyle:'solid', borderColor:'#5fcf80', borderWidth:'3px',paddingLeft:'15px', paddingRight:'15px',borderRadius:'3px'}}>SECTIONS</NavLink>
   
-  </li>
-  <li class="nav-item">
-  <Link class="nav-link txt" to="/dashboard/createcourse/files"  style={{color:'#5fcf80', fontWeight:'700'}} >FILES</Link>
-  {/* <Link class={"nav-link txt " + (isActive3 ? 'active': null)} to="/dashboard/createcourse/files"  style={{color:'#5fcf80', fontWeight:'700'}} onClick={handleClick3}>FILES</Link> */}
   </li>
   </ul>
              
@@ -61,10 +58,7 @@ const Createcourse = (props) => {
       <Route path="/dashboard/createcourse/section">
       <Sections/>
       </Route>
-                 
-      <Route path="/dashboard/createcourse/files">
-      <Files/>
-      </Route>
+  
 
       <Route path="/dashboard/createcourse/howitworks">
       <Howitworks/>
