@@ -14,6 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Preview from './components/Preview';
 import Takecourse from './components/Takecourse';
 import CoursePreview  from './components/Coursepreview';
+import TutorPreview from './components/Tutorpreview';
 
 
 AOS.init();
@@ -34,7 +35,7 @@ function App() {
           <Route path="/preview" component={Preview} />
         <Route path="/takecourse/:course" component={Takecourse} />
         <Route path="/coursepreview/:course"  component={CoursePreview} />
-       
+        <Route path="/tutorpreview/:course" component={TutorPreview} />
         </Router>
       
         {/* render={() => <Mylearning/>} */}

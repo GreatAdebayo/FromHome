@@ -7,6 +7,8 @@ import Skeleton from 'react-loading-skeleton';
 import { useParams } from "react-router";
 import axios from 'axios';
 import { Baseurl } from '../components/Baseurl.js';
+import ReactStars from "react-rating-stars-component";
+
 
 const AllCourses = () => {
   let {course} = useParams();
@@ -29,7 +31,13 @@ const AllCourses = () => {
     
      })
   }, [])
+
+
+ 
+
+
 const [isOpen, setIsOpen] = useState(false)
+const fileUrl = `${Baseurl}profilepics/`; 
 
 const toggle = () => {
    setIsOpen(!isOpen);
@@ -68,14 +76,26 @@ return (
       <h3 className="text-capitalize" style={{ cursor: 'pointer', textDecoration:'none' }}><a>{item.title}</a></h3>
       <p className="text-capitalize">{item.description}</p>
       <div class="trainer d-flex justify-content-between align-items-center">
-        <div class="trainer-profile d-flex align-items-center">
-          <img src="/assets/img/trainers/trainer-1.jpg" class="img-fluid" alt=""/>
-          <span>{item.tutor_name}</span> 
+      <div class="trainer-profile d-flex align-items-center">
+      {item.tutor_pic ? <img src={fileUrl+item.tutor_pic} class="img-fluid" alt=""/>
+                    : <p className="text-light rounded-circle text-center p-auto" style={{ width: '48px', height: '48px', fontSize: '32px', backgroundColor: '#5fcf80', cursor: 'pointer' }}>{item.tutor_name[0]}</p>}
+       <span>{item.tutor_name}</span> 
         </div>
         <div class="trainer-rank d-flex align-items-center">
-          <i class="bx bx-user"></i>&nbsp;50
+          {/* <i class="bx bx-user"></i>&nbsp;{attendance == ''? 0 : attendance}
           &nbsp;&nbsp;
-          <i class='bx bxs-star'></i>&nbsp;65
+          <i class='bx bxs-star'></i>&nbsp;65 */}
+    <ReactStars
+    count={4}
+    // onChange={ratingChanged}
+    size={24}
+    isHalf={true}
+    emptyIcon={<i className="far fa-star"></i>}
+    halfIcon={<i className="fa fa-star-half-alt"></i>}
+    fullIcon={<i className="fa fa-star"></i>}
+    activeColor="#ffd700"
+    style={{textDecoration:'none', outline:'none'}}
+  />
         </div>
       </div>
     </div>

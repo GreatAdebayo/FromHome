@@ -15,8 +15,9 @@ class MyIndex {
  'CodeExpired'=>'', 'CodeCorrect'=>'', 'CodeWrong'=>'', 'VerifyCodeReSent'=>'', 'EmailNotFound'=>'',
  'Auth'=>'', 'LoginSuccess'=>'', 'UserInfo'=>'', 'Verify'=>'', 'CoursePosted'=>'', 'CreatedCourse'=>'', 
  'SearchedCourses'=>'', 'CourseDetails'=>'', 'CourseSection'=>'', 'FileLarge'=>'', 'FileUploaded'=>'', 
- 'FileNotUploaded'=>'', 'FileNotSupported'=>'', 'AlreadySaved'=>'', 'CourseSaved'=>'', 'SavedCourse'=>'', 'WelcomeBack'=>'',
- 'HappyLearning'=>'', 'MyLearning'=>'', 'Sections'=>'');
+ 'FileNotUploaded'=>'', 'FileNotSupported'=>'', 'AlreadySaved'=>'', 'CourseSaved'=>'', 'SavedCourse'=>'', 
+ 'WelcomeBack'=>'', 'HappyLearning'=>'', 'MyLearning'=>'', 'Sections'=>'', 'PicUploaded'=>'', 'ReviewSent'=>'', 
+ 'Reviews'=>'', 'HasFile'=>'');
 //API ENDS//
 
 
@@ -212,6 +213,7 @@ class MyIndex {
       $myFetchedUser = $res->fetch_assoc();
       $fetchedPass =   $myFetchedUser['password'];
       $fetchedUserId = $myFetchedUser['user_id'];
+      $fetchedLname = $myFetchedUser['last_name'];
       $verifyPassword = password_verify($password, $fetchedPass);
       if($verifyPassword){
         $data = array(
@@ -219,6 +221,7 @@ class MyIndex {
           'iat'=>time(),        
           'exp'=>time() + 86400,
           'user'=>$fetchedUserId,
+          'lname'=>$fetchedLname
         );
         $auth= JWT::encode($data, $_ENV['SECRET']);
         $response['Auth'] = json_encode($auth); 
@@ -254,8 +257,9 @@ class MyIndex {
     $fetchedVerStatus = $myFetchedUser['verification_status'];
     $fetchedBalance = $myFetchedUser['balance'];
     $fetchedEarning = $myFetchedUser['earning'];
+    $fetchedPics = $myFetchedUser['profile_pics'];
     $userInfo = array('fname'=>$fetchedFname , 'lname'=>$fetchedLname, 'email'=>$fetchedEmail, 
-    'status'=>$fetchedVerStatus, 'balance'=>$fetchedBalance, 'userid'=>$fetchedUserId, 'earning'=>$fetchedEarning);
+    'status'=>$fetchedVerStatus, 'balance'=>$fetchedBalance, 'userid'=>$fetchedUserId, 'earning'=>$fetchedEarning, 'profile'=>$fetchedPics);
     $response['UserInfo'] = $userInfo;
   }
     echo json_encode($response);
@@ -276,15 +280,16 @@ public function postCourse($lowCategory , $cost, $desc, $title, $userId, $course
      if($res->num_rows > 0){
       $myFetchedUser = $res->fetch_assoc();
       $fetchedLname = $myFetchedUser['last_name'];
+      $fetchedPic = $myFetchedUser['profile_pics'];
       if($cost == ''){
        $fee = "Free";
       }else{
         $fee = $cost;
       }
-      $courseSql = "INSERT INTO courses_tb(user_id, tutor_name, title, description, category, cost, course_code) 
-      VALUES (?, ?, ?, ?, ?, ?, ?)";
+      $courseSql = "INSERT INTO courses_tb(user_id, tutor_name, tutor_pic, title, description, category, cost, course_code) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = $this->conn->prepare($courseSql); 
-      $stmt->bind_param("sssssss", $userId,  $fetchedLname, $title, $desc, $lowCategory , $fee, $courseCode);
+      $stmt->bind_param("ssssssss", $userId,  $fetchedLname, $fetchedPic, $title, $desc, $lowCategory , $fee, $courseCode);
       if($stmt->execute()){
       $checkCourseId = "SELECT * FROM courses_tb WHERE user_id = ? and course_code = ?";
       $stmt = $this->conn->prepare($checkCourseId);
@@ -384,6 +389,8 @@ public function courseDetails($code){
   if($res->num_rows > 0){
   $myFetchedCourse = $res->fetch_assoc();
   $response['CourseDetails'] = $myFetchedCourse;
+  // $courseId = $myFetchedCourse['course_id'];
+ 
   }
   echo json_encode($response);
 }
@@ -420,32 +427,33 @@ public function postFiles($authorize, $tmpLocation, $filename, $ext, $currentTim
   if(in_array($ext, $arr)){
   $newFilename = $authorize."file".$currentTime.".".$ext; 
   $finalLocation = "uploads/". $newFilename;
-  $uploadFile = move_uploaded_file($tmpLocation, $finalLocation);
-  if($uploadFile){
-  $insertFilename = "INSERT INTO files_tb(file_name, section_id) 
-  VALUES (?, ?)";
-  $stmt = $this->conn->prepare($insertFilename); 
-  $stmt->bind_param("ss", $newFilename,  $authorize);
-  if($stmt->execute()){
-  $response['FileUploaded'] = 'FileUploaded';
-  $checkSection = "SELECT * FROM course_section_tb WHERE section_id = ?";
-  $stmt = $this->conn->prepare($checkSection);
+  $checkFile = "SELECT * FROM files_tb WHERE section_id = ?";
+  $stmt = $this->conn->prepare($checkFile);
   $stmt->bind_param("s", $authorize);
   $stmt->execute();
   $res = $stmt->get_result();
   if($res->num_rows > 0){
-   $myFetchedSection = $res->fetch_assoc();
-   $noFiles = $myFetchedSection['files'];
-   $newNoFiles = $noFiles + 1;
-   $UpdateFileStatus = "UPDATE course_section_tb SET files = ? WHERE section_id = ?";
-   $stmt = $this->conn->prepare($UpdateFileStatus); 
-   $stmt->bind_param("ss", $newNoFiles, $authorize);
-   $stmt->execute();
-  }
-    }
+  $response['HasFile'] = 'HasFile';
   }else{
-  $response['FileNotUploaded'] = 'FileNotUploaded';
+  $uploadFile = move_uploaded_file($tmpLocation, $finalLocation);
+  if($uploadFile){
+    $insertFilename = "INSERT INTO files_tb(file_name, section_id) 
+    VALUES (?, ?)";
+    $stmt = $this->conn->prepare($insertFilename); 
+    $stmt->bind_param("ss", $newFilename,  $authorize);
+    $newNoFiles = 'true';
+    if($stmt->execute()){
+    $response['FileUploaded'] = 'FileUploaded';
+    $UpdateFileStatus = "UPDATE course_section_tb SET files = ? WHERE section_id = ?";
+    $stmt = $this->conn->prepare($UpdateFileStatus); 
+    $stmt->bind_param("ss", $newNoFiles, $authorize);
+    $stmt->execute();
+      }
+    }else{
+    $response['FileNotUploaded'] = 'FileNotUploaded';
+    }
   }
+ 
   }else{
   $response['FileNotSupported'] = 'FileNotSupported';
   }
@@ -511,7 +519,7 @@ echo json_encode($response);
 
 //START COURSE STARTS//
 
-public function startCourse($token,  $code, $title, $desc, $tutor,  $cost){
+public function startCourse($token,  $code, $title, $desc, $tutor,  $pic, $cost){
   $decoded = JWT::decode($token, $_ENV['SECRET'], array('HS256')); 
   $userId = $decoded->user;
   $checkCourse = "SELECT * FROM my_learning WHERE user_id = ? and course_code = ?";
@@ -524,24 +532,47 @@ public function startCourse($token,  $code, $title, $desc, $tutor,  $cost){
   // echo 'ddd';
   }
   else{
-  $insertCourse = "INSERT INTO my_learning(user_id, course_code, course_title, description, tutor, cost)
-  VALUES (?,?,?,?,?,?)";
+  $insertCourse = "INSERT INTO my_learning(user_id, course_code, course_title, description, tutor, tutor_pic, cost)
+  VALUES (?,?,?,?,?,?,?)";
   $stmt = $this->conn->prepare($insertCourse); 
-  $stmt->bind_param("ssssss", $userId,  $code, $title,  $desc, $tutor, $cost);
+  $stmt->bind_param("sssssss", $userId,  $code, $title,  $desc, $tutor,  $pic, $cost);
   if($stmt->execute()){
   $response['HappyLearning'] = 'HappyLearning';
+  $check = "SELECT * FROM courses_tb WHERE course_code = ?";
+  $stmt = $this->conn->prepare($check);
+  $stmt->bind_param("s", $code);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if($res->num_rows > 0){
+  $myFetchedCourse = $res->fetch_assoc();
+  $courseId = $myFetchedCourse['course_id'];
+  $checkAttend = "SELECT * FROM course_attendance WHERE course_id = ? and user_id = ?";
+  $stmt = $this->conn->prepare($checkAttend);
+  $stmt->bind_param("ss", $courseId, $userId);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if($res->num_rows > 0){
+
+  }else{
+  $AttendSql = "INSERT INTO course_attendance(course_id, user_id) 
+  VALUES (?, ?)";
+  $stmt = $this->conn->prepare($AttendSql); 
+  $stmt->bind_param("ss", $courseId, $userId); 
+  $stmt->execute();
+
+  }
     }
   }
-  echo json_encode($response);
+  
 }
-
+echo json_encode($response);
+}
 //START COURSE ENDS//
 
 
 //FETCH MY LEARNING STARTS//
 public function getMyLearning($token){
   $x = [];
-  $courseCode = '';
   $decoded = JWT::decode($token, $_ENV['SECRET'], array('HS256')); 
   $userId = $decoded->user;
   $checkUser = "SELECT * FROM my_learning WHERE user_id = ?";
@@ -588,20 +619,113 @@ echo json_encode($response);
 
 //TAKE COURSE ENDS//
 
+
+//COURSE ATTENDANCE STARTS//
+
+public function attendance($code){
+  $checkCourse = "SELECT * FROM courses_tb WHERE course_code = ?";
+  $stmt = $this->conn->prepare($checkCourse);
+  $stmt->bind_param("s", $code);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if($res->num_rows > 0){
+   $myFetchedCourse = $res->fetch_assoc();
+   $courseId = $myFetchedCourse['course_id'];
+  $checkAttend = "SELECT * FROM course_attendance WHERE course_id = ?";
+  $stmt = $this->conn->prepare($checkAttend);
+  $stmt->bind_param("s", $courseId);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if($res->num_rows > 0){
+  while($row = $res->fetch_array()){
+  $x[] = $row;  
+ }
+
+  }
+  echo json_encode(count($x));
+  }
+}
+//COURSE ATTENDANCE ENDS//
+
+
+
+
+//PROFILE PICS STARTS//
+
+public function profilePics($authorize, $tmpLocation, $filename, $ext, $currentTime, $arr){
+  $token = json_decode($authorize);
+  $decoded = JWT::decode($token , $_ENV['SECRET'], array('HS256')); 
+  $userId = $decoded->user;
+  if($_FILES['myFile']['size']>3145728){
+    $response['FileLarge'] = 'FileLarge';
+    }else{
+    if(in_array($ext, $arr)){
+    $newFilename =  $userId."file".$currentTime.".".$ext; 
+    $finalLocation = "profilepics/". $newFilename;
+    $uploadFile = move_uploaded_file($tmpLocation, $finalLocation);
+    if($uploadFile){
+      $UpdatePicName = "UPDATE users_tb SET profile_pics = ? WHERE user_id = ?";
+      $stmt = $this->conn->prepare($UpdatePicName); 
+      $stmt->bind_param("ss", $newFilename,  $userId);
+      if($stmt->execute()){
+        $response['PicUploaded'] = 'PicUploaded';  
+      }
+    }
+  }
+
+}
+echo json_encode($response); 
+}
+
+//PROFILE PICS ENDS
+
+
+
+//REVIEW STARTS//
+
+public function review($token, $code, $content){
+  $decoded = JWT::decode($token , $_ENV['SECRET'], array('HS256')); 
+  $userId = $decoded->user;
+  $lname = $decoded->lname;
+  $reviewSql = "INSERT INTO review_tb(user_id, last_name, course_code, content) 
+  VALUES (?, ?, ?, ?)";
+  $stmt = $this->conn->prepare($reviewSql); 
+  $stmt->bind_param("ssss", $userId,  $lname, $code, $content); 
+  $stmt->execute();
+  $response['ReviewSent'] = 'ReviewSent'; 
+  echo json_encode($response); 
+}
+
+//REVIEW ENDS//
+
+
+
+//GET REVIEWS STARTS//
+
+public function getReviews($code){
+  $x = [];
+  $getReviews = "SELECT * FROM review_tb WHERE course_code = ?";
+  $stmt = $this->conn->prepare($getReviews);
+  $stmt->bind_param("s", $code);
+  $stmt->execute();
+  $res = $stmt->get_result();
+  if($res->num_rows > 0){
+  while($row = $res->fetch_array()){
+  $x[] = $row;
+  $response['Reviews'] = $x; 
+ }
+
+  }
+  echo json_encode($response); 
 }
 
 
+//GET REVIEWS ENDS//
 
 
 
 
 
-
-
-
-
-
-
-
+}
 
 ?>

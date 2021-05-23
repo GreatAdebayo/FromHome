@@ -8,6 +8,10 @@ import axios from 'axios';
 import { Baseurl } from '../components/Baseurl.js';
 import Swal from 'sweetalert2';
 
+
+
+
+
 const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
@@ -26,7 +30,7 @@ let {course} = useParams();
 let history = useHistory();
   
   useEffect(() => {
-  axios.post(`${Baseurl}coursedetails.php`, JSON.stringify(course)
+    axios.post(`${Baseurl}coursedetails.php`, JSON.stringify(course)
   ).then(res => {
     if (res.status == 200) {
     let CourseResponse = res.data.CourseDetails;
@@ -36,6 +40,32 @@ let history = useHistory();
  
   })
   }, [])
+
+  useEffect(() => {
+    axios.post(`${Baseurl}attendance.php`, JSON.stringify(course)
+    ).then(res => {
+      if (res.status == 200) {
+        let AttendResponse = res.data
+        setAttendance(AttendResponse)
+     }
+    })
+   
+  }, [])
+
+  useEffect(() => {
+    axios.post(`${Baseurl}getreviews.php`, JSON.stringify(course)
+    ).then(res => {
+      if (res.status == 200) {
+        let getReview = res.data.Reviews
+        if (getReview) {
+          setGetreview(getReview)
+        }
+     }
+    })
+   
+  }, [])
+  
+
   
   const saveCourse = () => {
     if (localStorage.Token) {
@@ -84,8 +114,8 @@ let history = useHistory();
      let token = JSON.parse(localStorage.getItem('Token'))
      let startCourse = {
      token: token, code: courseDetails.course_code, title: courseDetails.title,
-     desc: courseDetails.description, tutor: courseDetails.tutor_name, cost: courseDetails.cost
-     }
+     desc: courseDetails.description, tutor: courseDetails.tutor_name, cost: courseDetails.cost,
+      pic:courseDetails.tutor_pic }
      axios.post(`${Baseurl}startcourse.php`, JSON.stringify(startCourse)
      ).then(res => {
        if (res.status == 200) {
@@ -129,9 +159,43 @@ let history = useHistory();
      history.push('/login')
    }
  }
-   
+ const handleReview = (e) => {
+  let Review = e.target.value;
+  setReview(Review);
+ }
   
-const [courseDetails, setCourseDetails] = useState({})
+  
+ const submitReview = () => {
+  if (localStorage.Token) {
+    if (review) {
+      let token = JSON.parse(localStorage.getItem('Token'))
+      let details = {token: token, code: courseDetails.course_code, content:review}
+        axios.post(`${Baseurl}review.php`, details
+        ).then(res => {
+          let reviewResponse = res.data.ReviewSent
+          if (reviewResponse) {
+            Toast.fire({
+              icon: 'success',
+              title: 'Review Sent'
+            })
+          }
+        })
+    }
+  } else {
+    Toast.fire({
+      icon: 'info',
+      title: 'Login In to Send Review'
+    })
+    history.push('/login')
+  }
+}
+  
+  
+  
+ const [review, setReview] = useState('')
+ const [Getreview, setGetreview] = useState([])
+  const [courseDetails, setCourseDetails] = useState({})
+  const [attendance, setAttendance] = useState('')
 const toggle = () => {
    setIsOpen(!isOpen);
   };
@@ -160,7 +224,7 @@ const toggle = () => {
         courseDetails.category == 'git' ? <i class="fab fa-git fa-5x" style={{ color: "#ffa76e" }}></i> :
         courseDetails.category == 'graphics design' ? <i class="fas fa-photo-video fa-5x" style={{color: '#5578ff'}}></i>:
         courseDetails.category == 'others' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>:
-        courseDetails.category == 'andriod development' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>: null              
+        courseDetails.category == 'andriod development' ?  <i class="fab fa-android fa-5x" style={{color: "#29cc61"}}></i>: null              
         }
             <h3 className="text-capitalize">{courseDetails.title}</h3>
             <p>
@@ -181,7 +245,7 @@ const toggle = () => {
 
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Number of Students</h5>
-              <p>30</p>
+              <p>{attendance == ''? 0 : attendance}</p>
             </div>
 
          <div class="course-info d-flex justify-content-between align-items-center">
@@ -201,24 +265,30 @@ const toggle = () => {
        </section>
 
          <div class="container">
-         <div className="col-lg-12 content">
+         <div>
         <p class="fst-italic">
           Course Reviews:
         </p>
-        <ul>
-       <li class="list-group-item"> <i className="bi bi-check-circle"></i> An item</li>  </ul>
+  <ul>
+            
+      {Getreview.map((item, index) => {
+        return (
+          <li style={{ listStyle: 'none' }} key={index}> <i class="fas fa-check"></i><small> {item.last_name}</small>: {item.content}</li>
+      )
+      })}
+    </ul>
      </div> 
 
-         <div class="form-group text-left">
+  <div class="form-group text-left">
     <label for="exampleFormControlTextarea1" className="tx font-weight-bold" style={{fontFamily: '"Poppins" sans-serif', color:'#777777'}}>Course Review</label>
-    <textarea  class="form-control"  rows="3" name="desc" placeholder="Drop a review"/>
+  <textarea  class="form-control"  rows="3" name="desc" placeholder="Drop a review" onChange={handleReview}/>
   </div>
-  <div className="text-left">
+  <div className="text-left mb-4">
   <button className="btn  g px-3 shadow font-weight-bold" style={{
     backgroundColor: '#5FCF80',
     color: 'white',
     fontFamily:'"Ubuntu", sans-serif'
-      }}>Send</button>
+      }} onClick={submitReview}>Send</button>
       </div>
            </div>
 

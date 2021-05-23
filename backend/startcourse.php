@@ -1,8 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 include 'index.php';
 header("Access-Control-Allow-Origin: $localhostUrl");
@@ -20,6 +20,7 @@ function trimInputs($val){
  $desc = trimInputs($details->desc);
  $tutor = trimInputs($details->tutor);
  $cost = trimInputs($details->cost);
+ $pic = trimInputs($details->pic);
  $newIndex = new MyIndex;
- $newIndex->startCourse($token,  $code, $title, $desc, $tutor,  $cost);
+ $newIndex->startCourse($token,  $code, $title, $desc, $tutor, $pic, $cost);
 ?>

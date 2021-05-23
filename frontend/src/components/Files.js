@@ -48,10 +48,10 @@ const Files = () => {
       setFileName(value);
       let file = e.target.files[0];
       setFile(file)
-   if (setFileName) {
-    Toast2.fire({
-    icon: 'success',
-    title: 'File Chosen'
+      if (setFileName) {
+       Toast2.fire({
+       icon: 'success',
+       title: 'File Chosen'
     }) 
    }  
    }
@@ -91,6 +91,11 @@ const Files = () => {
             Toast2.fire({
                icon: 'info',
                title: 'File too Large'
+            })
+         } else if (postFileRes.HasFile) {
+            Toast2.fire({
+               icon: 'info',
+               title: 'Section already has a file'
             })
          } 
       }
@@ -135,7 +140,7 @@ const Files = () => {
       <>
       <strong class="text-uppercase mr-3" key={index}>{index+1}. {item.section_name}</strong>
       <p><strong>Content:</strong> {item.content.length > 15 ? `${item.content.substring(0, 15)}...` : item.content == '' ? 'No Content' : <>{item.content}</>} <br />
-      <span><p><strong>File: {item.files == 0 ? 'No File Attached' : item.files}</strong></p> </span>  <label className="btn g btn-sm">
+      <span><p><strong>File: {item.files == 'false' ? 'No File Attached' : 'File Attached'}</strong></p> </span>  <label className="btn g btn-sm">
      <strong> Choose File</strong> <input type="file" hidden onChange={chooseFile}/>
       </label> <a className="btn g float-right btn-sm" onClick={()=>addFile(item.section_id)}><strong>Add</strong> </a>  </p>    
       </>

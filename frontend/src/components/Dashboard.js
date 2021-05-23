@@ -66,7 +66,7 @@ const Dashboard = () => {
       </Route>
 
       <Route  path="/dashboard/myprofile">
-      <Myprofile fname={details.fname} lname={details.lname} email={details.email} status={details.status}/>
+          <Myprofile fname={details.fname} lname={details.lname} email={details.email} status={details.status} profile={details.profile}/>
       </Route>
      
       <Route  path="/dashboard/createcourse">

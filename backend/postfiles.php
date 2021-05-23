@@ -15,8 +15,7 @@ $tmpLocation = $_FILES['myFile']['tmp_name'];
 $filename = basename($_FILES['myFile']['name']);
 $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 $currentTime = time();
-$arr = ['mp4', 'pdf', 'zip'];
+$arr = ['mp4', 'pdf', 'zip', 'mov'];
 $newIndex = new MyIndex;
 $newIndex->postFiles($authorize, $tmpLocation, $filename, $ext, $currentTime, $arr);
-
 ?>

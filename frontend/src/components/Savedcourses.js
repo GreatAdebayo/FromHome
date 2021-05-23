@@ -3,6 +3,7 @@ import { Link} from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
 import { Baseurl } from '../components/Baseurl.js';
+import ReactStars from "react-rating-stars-component";
 
 
 const Savedcourses = () => {
@@ -28,6 +29,9 @@ useEffect(() => {
   })
 }, [])
   
+// const ratingChanged = (newRating) => {
+//   console.log(newRating);
+// };
   
  return (
   <div>
@@ -56,13 +60,24 @@ useEffect(() => {
       <p className="text-capitalize">{item.description}</p>
       <div class="trainer d-flex justify-content-between align-items-center">
         <div class="trainer-profile d-flex align-items-center">
-          <img src="/assets/img/trainers/trainer-1.jpg" class="img-fluid" alt=""/>
-          <span>{item.tutor}</span> 
+          {/* <img src="/assets/img/trainers/trainer-1.jpg" class="img-fluid" alt=""/> */}
+          <span>Tutor: {item.tutor}</span> 
         </div>
-        <div class="trainer-rank d-flex align-items-center">
-          <i class="bx bx-user"></i>&nbsp;50
+            <div class="trainer-rank d-flex align-items-center">
+    <ReactStars
+    count={4}
+    // onChange={ratingChanged}
+    size={24}
+    isHalf={true}
+    emptyIcon={<i className="far fa-star"></i>}
+    halfIcon={<i className="fa fa-star-half-alt"></i>}
+    fullIcon={<i className="fa fa-star"></i>}
+    activeColor="#ffd700"
+    style={{textDecoration:'none', outline:'none'}}
+  />
+          {/* <i class="bx bx-user"></i>&nbsp;50
           &nbsp;&nbsp;
-          <i class='bx bxs-star'></i>&nbsp;65
+          <i class='bx bxs-star'></i>&nbsp;65 */}
         </div>
       </div>
     </div>

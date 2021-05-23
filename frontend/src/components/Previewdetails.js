@@ -26,7 +26,7 @@ const Previewdetails = (props) => {
         props.course.category == 'git' ? <i class="fab fa-git fa-5x" style={{ color: "#ffa76e" }}></i> :
         props.course.category == 'graphics design' ? <i class="fas fa-photo-video fa-5x" style={{color: '#5578ff'}}></i>:
         props.course.category == 'others' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>:
-        props.course.category == 'andriod development' ?  <i class="fab fa-discourse fa-5x" style={{color: "#29cc61"}}></i>: null 
+        props.course.category == 'andriod development' ?  <i class="fab fa-android fa-5x" style={{color: "#29cc61"}}></i>: null 
         }
        
        <h3 className="text-capitalize">{props.course.title}</h3>
@@ -43,7 +43,7 @@ const Previewdetails = (props) => {
 
             <div class="course-info d-flex justify-content-between align-items-center">
               <h5>Course Fee</h5>
-              <p>₦{props.course.cost}.00</p>
+                 <p>{props.course.cost == 'Free'? 'Free' : <>₦{props.course.cost}</>}</p>
             </div>
 
             <div class="course-info d-flex justify-content-between align-items-center">
@@ -57,8 +57,9 @@ const Previewdetails = (props) => {
         </div>
         
          <div class="course-info d-flex justify-content-between align-items-center">
-         <Link to="/coursedetails" style={{ cursor: 'pointer', textDecoration: 'none' }}><h4><i class="fad fa-play"></i> Stop Course</h4></Link>
-         </div>
+         <Link  style={{ cursor: 'pointer', textDecoration: 'none' }}><h4><i class="fad fa-play"></i> Pause Course</h4></Link>
+         <Link to={`/tutorpreview/${props.course.course_code}`} style={{ cursor: 'pointer', textDecoration: 'none' }}><h4><i class="fad fa-play"></i> See Course</h4></Link>
+        </div>
 
           </div>
         </div>

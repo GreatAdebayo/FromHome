@@ -9,7 +9,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { useParams } from "react-router";
 import ReactPlayer from 'react-player'
-
+import DownloadLink from "react-download-link";
 
 
 const Toast = Swal.mixin({
@@ -31,7 +31,6 @@ const Takecourse = () => {
  let {course} = useParams();
  
  useEffect(() => {
-  setVideoFilePath('assets/img/video.mp4')
   if (localStorage.Token) {
    axios.post(`${Baseurl}takecourse.php`, JSON.stringify(course)
    ).then(res => {
@@ -102,9 +101,9 @@ const handleProgress = ({played}) => {
           height='100%'
           controls={true} 
           onProgress={handleProgress}    
-        />
+             />
       </div>
-        </div>
+         </div>
       </div>
      </section>
      
@@ -133,7 +132,7 @@ const handleProgress = ({played}) => {
               <div class="accordion-body text-left">
                 <strong>Content:</strong> <span style={{fontFamily: '"Raleway", sans-serif'}}>{item.content}</span>  <br/> <br/>
                 {!item.file_name ? '' : item.file_name.charAt(item.file_name.length - 1) == '4' ? <span style={{ fontFamily: '"Raleway", sans-serif', cursor: 'pointer' }}
-                onClick={() => playVideo(item.file_name)}><i class="fas fa-play"></i> Click to Play Video</span> :
+                onClick={() => playVideo(item.file_name)}><i class="fas fa-play"></i> Click to Play Video </span> :
                 item.file_name.charAt(item.file_name.length - 1) == 'f' ? <span style={{fontFamily: '"Raleway", sans-serif', cursor: 'pointer' }}
                 onClick={() => playVideo(item.file_name)}><i class="fas fa-download"></i> Download PDF File</span>  :
                 item.file_name.charAt(item.file_name.length - 1) == 'p' ? <span style={{fontFamily: '"Raleway", sans-serif', cursor: 'pointer' }}
@@ -185,9 +184,9 @@ const handleProgress = ({played}) => {
               <div class="col-lg-2 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><Link to="hero"  style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a >Home</a></Link></li>
-              <li><Link to="about" style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a>About us</a></Link></li>
-              <li><Link to="courses" style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a to="courses">Courses</a></Link></li>
+              <li><Link2 to="/"  style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a >Home</a></Link2></li>
+              <li><Link2 to="/" style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a>About us</a></Link2></li>
+              <li><Link2 to="/courses" style={{ cursor: 'pointer' }}><i class="bx bx-chevron-right"></i> <a to="courses">Courses</a></Link2></li>
               <li><Link2 to="/signup"><i class="bx bx-chevron-right"></i> <a href="#">Signup</a></Link2></li>
             </ul>
               </div>
@@ -220,7 +219,7 @@ const handleProgress = ({played}) => {
       </div>
       </div>
 
-      <Link to="hero"  className="back-to-top"><a id="back-to-top"  role="button"><i className="back-top fas fa-chevron-circle-up float-right" style={{color:'#5fcf80', fontSize:'35px'}}></i></a></Link>
+      <Link to="cta"  className="back-to-top"><a id="back-to-top"  role="button"><i className="back-top fas fa-chevron-circle-up float-right" style={{color:'#5fcf80', fontSize:'35px'}}></i></a></Link>
       </div>
       </div>
       </div>
